@@ -1,0 +1,91 @@
+.search {
+    font-family: $title-text;
+
+    strong {
+        color: $darker-blue;
+    }
+
+    .btn {
+        font-family: $header-text;
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+    .title {
+        font-family: $header-text;
+        font-size: 16px;
+        color: $orange-darker;
+    }
+
+    .search__tab {
+        .nav-link {
+            font-family: $header-text;
+            font-weight: bold;
+        }
+    }
+
+    .tab__content-profile {
+        .content-profile__info {
+            .info__name {
+                font-family: $header-text;
+                font-size: 16px;
+                font-weight: bold;
+                color: $orange-darker;
+            }
+
+            .info__titre {
+                width: 100px;
+                height: 23px;
+                padding: 2.5px;
+                border-radius: 3px;
+                background-color: $orange;
+                color: $lighter-grey;
+                font-size: 14px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+        }
+
+        &:hover {
+            padding-top: 1.2em;
+            padding-left: 30px;
+            width: 90%;
+            height: 108px;
+            border-radius: 3px;
+            background-color: $lighter-grey;
+        }
+    }
+
+    .project-content {
+        .project-content__title {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: $header-text;
+            color: $orange-darker;
+        }
+        .tache {
+            font-size: 14px;
+        }
+        .nbre-tache {
+            text-align: center;
+            padding-top: 2.3px;
+            width: 58px;
+            height: 25px;
+            border-radius: 3px;
+            background-color: $orange-darker;
+            color: $lighter-grey;
+        }
+        .project-content__progress-text {
+            font-size: 14px;
+        }
+
+        &:hover {
+            width: 95%;
+            height: 194;
+            border-radius: 3px;
+            background-color: $lighter-grey;
+        }
+    }
+   
+}

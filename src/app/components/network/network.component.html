@@ -1,0 +1,117 @@
+ <!--<app-nav-bar></app-nav-bar>-->
+ <section class="network">
+   <div class="container" *ngIf="dataFetched">
+      <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+         <li class="nav-item col-md-4">
+            <a class="nav-link text-center active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">CONTACT(S)<span class="badge badge-danger ml-2">{{network.contactSize}}</span></a>
+         </li>
+         <li class="nav-item col-md-4">
+            <a class="nav-link text-center" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">INVITATION(S)<span class="badge badge-danger ml-2">{{network.requestSize}}</span></a>
+         </li>
+         <li class="nav-item col-md-4">
+            <a class="nav-link text-center" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">REQUETE(S)<span class="badge badge-danger ml-2">{{network.invitationSize}}</span></a>
+         </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">	
+				 <h5 class="no_contact mt-3" *ngIf="network.contacts.length==0">
+					AUCUN CONTACT
+				 </h5>			 
+			 <div class="row">		 
+				<div class="contact mt-3 col-md-3 mr-3" *ngFor = "let contact of network.contacts">
+				   <div class="contact__info d-flex" style="cursor:pointer" (click)="onUserSelect(contact)">
+				   
+					  <img class="ml-3 rounded-circle" src="{{serverPath}}/imag/user/{{contact.id}}" width="50" height="50" alt="" *ngIf="dataFetched && contact.profileImageSet">
+					  <img class="ml-3 rounded-circle" src="{{serverPath}}/imag/user/default" width="50" height="50" alt="" *ngIf="dataFetched && !contact.profileImageSet">		             			   
+													   
+					  <div class="contact-text ml-3">
+						 <p class="contact__info-name">{{contact.firstName}} {{contact.lastName}}</p>
+						 <p class="Contact__info-title">{{contact.userType}}</p>
+					  </div>
+				   </div>
+				   <div class="contact-bottom mt-2 d-flex">
+					  <div class="contact__social mr-auto">
+						 <img src="assets/images/icon2/facebook-logo-button.svg"             class="img-rounded-circle ml-2" width="20" height="20" alt="">
+						 <img src="assets/images/icon2/google-plus-logo-button.svg" class="img-rounded-circle ml-2" width="20" height="20" alt="">
+						 <img src="assets/images/icon2/linkedin-button.svg"               class="img-rounded-circle ml-2" width="20" height="20" alt="">
+					  </div>
+					  <div class="contact__button mr-3">
+						 <!-- <button type="button" class="btn btn-danger" (click)="onDeleteContact(contact)">Supprimer</button> -->
+						 <span  style="background-color:#ffff;cursor:pointer" (click)="onDeleteContact(contact)">
+							<fa name="trash" size="2x" style="color:#dc3545"></fa>
+						 </span >						 
+					  </div>
+				   </div>
+				</div>
+			 </div>
+         </div>
+         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+				<h5 class="no_contact mt-3" *ngIf="network.userRequests.length==0">
+					AUCUNE INVITATION
+				</h5>		 
+			 <div class="row">	
+				<div class="contact mt-3 col-md-3 mr-3" *ngFor = "let request of network.userRequests">
+				   <div class="contact__info d-flex" style="cursor:pointer" (click)="onUserSelect(request)">
+					  <img class="ml-3 rounded-circle" src="{{serverPath}}/imag/user/{{request.id}}" width="50" height="50" alt="" *ngIf="dataFetched && request.profileImageSet">
+					  <img class="ml-3 rounded-circle" src="{{serverPath}}/imag/user/default" width="50" height="50" alt="" *ngIf="dataFetched && !request.profileImageSet">		             			   			   
+					  <!--<img src="{{serverPath}}/image/user/{{request.id}}.jpg" class="ml-3" width="50" height="50" alt="">-->
+					  <div class="contact-text ml-3">
+						 <p class="contact__info-name">{{request.firstName}} {{request.lastName}}</p>
+						 <p class="Contact__info-title">{{request.userType}}</p>
+					  </div>
+				   </div>
+				   <div class="contact-bottom mt-2 d-flex">
+					  <div class="contact__social mr-auto">
+						 <img src="assets/images/icon2/facebook-logo-button.svg"             class="img-rounded-circle ml-2" width="20" height="20" alt="">
+						 <img src="assets/images/icon2/google-plus-logo-button.svg" class="img-rounded-circle ml-2" width="20" height="20" alt="">
+						 <img src="assets/images/icon2/linkedin-button.svg"               class="img-rounded-circle ml-2" width="20" height="20" alt="">
+					  </div>
+					  <div class="contact__button mr-3">
+						 <!-- <button type="button" class="btn btn-decline" (click)="onDeleteInvitation(request)">Annuler</button> -->
+						 <span  style="background-color:#ffff;cursor:pointer" (click)="onDeleteInvitation(request)">
+							<fa name="trash" size="2x" style="color:#dc3545"></fa>
+						 </span >
+						 <!-- <button type="button" class="btn btn-success" (click)="onAcceptInvitation(request)">Accepter</button> -->
+						 <span style="background-color:#ffff;cursor:pointer" (click)="onAcceptInvitation(request)" class="ml-4">
+							<fa name="check-circle" size="2x" style="color:#28a745"></fa>
+						 </span>
+					  </div>
+				   </div>
+				</div>	
+			 </div>
+		 </div>
+         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">		 
+				<h5 class="no_contact mt-3" *ngIf="network.usersInvited.length==0">
+					AUCUNE REQUETE
+				</h5>			 
+			 <div class="row">			 
+				<div class="contact mt-3 col-md-3 mr-3" *ngFor = "let contact of network.usersInvited">
+				   <div class="contact__info d-flex" style="cursor:pointer" (click)="onUserSelect(contact)">
+					  <img class="ml-3 rounded-circle" src="{{serverPath}}/imag/user/{{contact.id}}" width="50" height="50" alt="" *ngIf="dataFetched && contact.profileImageSet">
+					  <img class="ml-3 rounded-circle" src="{{serverPath}}/imag/user/default" width="50" height="50" alt="" *ngIf="dataFetched && !contact.profileImageSet">		             			   			   			   
+					  <!--<img src="{{serverPath}}/image/user/{{contact.id}}.jpg" class="ml-3" width="50" height="50" alt="">-->
+					  <div class="contact-text ml-3">
+						 <p class="contact__info-name">{{contact.firstName}} {{contact.lastName}}</p>
+						 <p class="Contact__info-title">{{contact.userType}}</p>
+					  </div>
+				   </div>
+				   <div class="contact-bottom mt-2 d-flex">
+					  <div class="contact__social mr-auto">
+						 <img src="assets/images/icon2/facebook-logo-button.svg"             class="img-rounded-circle ml-3" width="20" height="20" alt="">
+						 <img src="assets/images/icon2/google-plus-logo-button.svg" class="img-rounded-circle ml-3" width="20" height="20" alt="">
+						 <img src="assets/images/icon2/linkedin-button.svg"               class="img-rounded-circle ml-3" width="20" height="20" alt="">
+					  </div>
+					  <div class="contact__button mr-3">
+						<!-- <button type="button" class="btn btn-decline">Decline</button>-->
+						 <!-- <button type="button" class="btn btn-danger" (click)="onDeleteRequest(contact)">Annuler</button> -->
+						<span  style="background-color:#ffff;cursor:pointer" (click)="onDeleteRequest(contact)">
+							<fa name="trash" size="2x" style="color:#dc3545"></fa>
+						 </span >					 
+					  </div>
+				   </div>
+				</div>	
+			 </div>			
+		 </div>
+      </div>
+   </div>
+</section>

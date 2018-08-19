@@ -1,0 +1,77 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "foundersrooms"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+        "assets",
+        "favicon.ico",
+        "data"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [		
+		"assets/css/bootstrap-select.css",
+	    "assets/css/bootstrap-select.min.css",
+		"assets/css/imagehover.min.css",
+		"assets/css/style.css",	
+        "styles.css",
+		"../node_modules/font-awesome/css/font-awesome.min.css"	
+		
+      ],
+      "scripts": [
+		"../node_modules/jquery/dist/jquery.js",
+		"assets/js/popper.min.js",
+		"../node_modules/jquery-ui/ui/widget.js",
+		"../node_modules/bootstrap/dist/js/bootstrap.js",
+		"../node_modules/image-map/image-map.min.js",
+		"../node_modules/maphilight/jquery.maphilight.min.js",
+		"../node_modules/image-map/jQuery-rwdImageMaps-master/jquery.rwdImageMaps.min.js",
+		"../node_modules/image-map/mapper/mapper.js",
+		"../node_modules/cytoscape/dist/cytoscape.js"
+	  ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "src/tsconfig.spec.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "component": {}
+  }
+}

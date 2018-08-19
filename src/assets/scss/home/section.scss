@@ -1,0 +1,122 @@
+ .exchange {
+    padding: 3em;
+
+    .exchange-text {
+        padding-top: 2em;
+        width: 370px;
+        margin-left: 30px;
+
+        h3 {
+          font-family: $body-text;
+          font-weight: bold;
+          font-size: 59px;
+          text-align: center;
+          color: $orange-darker;
+          line-height: normal;
+        }
+
+        p {margin-left: 20px;
+            font-family: $body-text;
+            font-weight: normal;
+            font-stretch: normal;
+            text-align: start;
+            font-size: 16px;
+        }
+    }
+}
+
+ .explain {
+    padding: 3em;
+    background-color: $lighter-grey;
+
+    .explain__header {
+        h4 {
+            font-family: $body-text;
+            color: $orange;
+            font-size: 24px;
+            font-weight: bolder;
+        }
+    }
+
+    .porteur,.inverstiseur,.prestataire{
+        display: block;
+        text-align: center;
+    
+    }
+
+    .title-1 {
+        font-family: $body-text;
+        color: $orange-darker;
+        font-size: 22px;
+        font-weight: bolder;
+    }
+
+    .sub-text-1 {
+        font-family: $body-text;
+        font-size: 14px;
+    }
+    .btn {
+      width: 166px;
+      color: $lighter-grey;
+      font-weight: bold;
+      font-family: $header-text;  
+    }
+}
+
+.signin-box {
+    padding: 3em;
+    display: block;
+    
+    .box {
+        width: 401px;
+        height: 480px;
+        border-radius: 3px;
+        background-color: $lighter-grey;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+
+        .title {
+            font-family: $header-text;
+            font-size: 25px;
+            font-weight: bold;
+            color: $orange-darker;
+            padding-top: 1em;
+            padding-bottom: 0.2em;
+        }
+
+        .form-group {
+            margin-left: 2em;
+            margin-right: 2em;
+            input {
+                background-color: $light-blue;
+                height: 52px;
+            }
+            label {
+                font-family: $body-text;
+                font-size: 18px;
+                color: $darker-blue;
+            }
+            
+        }
+
+        .btn-sub {
+            margin-top: 1em;
+            margin-bottom: 1em;
+            margin-left: 2em;
+            margin-right: 2em;
+            width: 83.9%;
+            height: 52px;
+            font-family: $header-text;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .text-or {
+            font-family: $header-text;
+            font-size: 20px;
+            font-weight: bold;
+            color: $orange-darker;
+        }
+
+        
+    }
+}

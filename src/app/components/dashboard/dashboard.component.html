@@ -1,0 +1,348 @@
+ <!--<app-nav-bar></app-nav-bar>-->
+      <section class="body">
+
+        <!-- stat of modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <h5 class="modal-title" id="exampleModalLongTitle" >Nouveau Projet</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                    <form (submit)="addNewProject()">
+                      <div class="form-group">
+                        <label for="projectname">Nom Projet</label>
+                        <input id="projectname" type="text" class="form-control" aria-describedby="projectname" placeholder="Project Name">
+                      </div>
+					  <!--
+                      <div class="form-group">
+                            <label for="summernote">Description du Projet</label>
+                            <textarea id="summernote" class="form-control" aria-label="With textarea" placeholder="Project Description"></textarea>
+                        </div>-->
+						<!--
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>-->
+                    </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success" (click)="addNewProject()" >Enregistrer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container" *ngIf="dataFetched">
+          <div class="row">
+            <div [ngClass]="[userSelectionList.length>0 ? 'col-md-8' : 'col-md-12']">
+                <div class="body__button-create mb-3 d-flex align-items-end flex-column">
+                   
+                </div>   
+                <div id="accordion">
+                  <div class="card">
+                    <div class="card-header" id="headingOne">
+                      <div class="body__title-1 d-flex justify-content-between" >
+                        <div class="title-1-1 mb-2" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >Projets({{activeProjects.length}})</div>					
+						<div class="body__title-1 d-flex justify-content-between" *ngIf="me!=undefined">							
+							<div *ngIf="me.userType==createur" class="title-1-1"> <button type="button" name="new_project" id="new_project" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
+								Nouveau Projet
+							</button></div>
+							<input placeholder="Search" type="text" class="form-control ml-2" *ngIf="activeProjects.length!=0" >
+						</div>
+						<!--
+                        <div class="title-1-1"> <button type="button" name="new_project" id="new_project" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">New Project</button></div>
+						-->
+                      </div>
+                    </div>
+                
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                      <div class="card-body">
+					  	  <h5 class="empty_project_list mt-3" *ngIf="activeProjects.length==0">
+								Aucun Projet Actif
+						  </h5>	
+                          <div class="project-content mb-3" *ngFor = "let item of activeProjects">
+							  <div class="button-delet-left float-right" *ngIf="me.userType==createur">
+                                  <button (click)="deleteThatProject(item,false)" type="button" class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Project">								  
+									<span>	<fa  name="trash" ></fa> </span>
+								  </button>
+                                  <button (click)="updateProjectState(item,true)" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Archive Project">								  
+									<span>	<fa  name="archive" animation="spin" ></fa> </span>
+								  </button>								  
+                              </div>						  
+                              <h6 class="project-content__title" (click)="openProjectDetails(item)" style="cursor:pointer">
+                                  {{item.name}}
+                              </h6>
+                              <!-- <div class="project-content__tache ml-3"> -->
+                                  <!-- <p class="tache"> -->
+                                      <!-- TÂCHES  -->
+                                  <!-- </p> -->
+                                  <!-- <p class="nbre-tache"> -->
+                                      <!-- {{item.numberOfCompletedTask}} / {{item.numberOfAssignedTasks}} -->
+                                  <!-- </p> -->
+                              <!-- </div> -->
+                              <div class="project-content__progress col-8">
+                                  <p class="project-content__progress-text">
+                                      PROGRESSION
+                                  </p>
+                                  <div class="progress">
+                                      <div class="progress-bar" role="progressbar" [style.width.%]="item.ratio" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+										<span *ngIf="item.ratio>10">{{item.ratio | number: '1.2-2'}}</span>
+										<span *ngIf="item.ratio<=10" style="color:#131516;text-align:center">{{item.ratio | number: '1.2-2'}}</span>
+										</div>
+                                  </div>
+                              </div>
+                          </div> 
+                          <!-- end of first tache -->
+                    </div>
+                    <!-- end of scroll -->
+            </div>
+          </div>
+          <div class="card">
+              <div class="card-header" id="headingTwo">
+                  <div class="body__title-1 d-flex justify-content-between"  >
+                    <div class="title-1-1 mb-2 collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Archive({{archiveProjects.length}})</div>
+                    <div class="title-1-1" *ngIf="archiveProjects.length==0">						
+						<input placeholder="Search" type="text" class="form-control" >	
+					</div>
+                  </div>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+					  	  <h5 class="empty_project_list mt-3" *ngIf="archiveProjects.length==0">
+								Aucun Projet Archivé
+						  </h5>					
+                    <div class="project-content mb-3" *ngFor = "let item of archiveProjects" >
+							  <div class="button-delet-left float-right" *ngIf="me.userType==createur">
+                                  <button (click)="deleteThatProject(item,true)" type="button" class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Project">								  
+									<span>	<fa  name="trash" ></fa> </span>
+								  </button>
+                                  <button (click)="updateProjectState(item,false)" type="button" class="btn btn-outline-success btn-sm" data-toggle="tooltip" data-placement="top" title="Active Project">								  
+									<span>	<fa  name="archive" animation="spin"></fa> </span>
+								  </button>								  
+                              </div>					
+                        <h6 class="project-content__title" (click)="openProjectDetails(item)" style="cursor:pointer">
+                            {{item.name}}
+                        </h6>
+                        <!-- <div class="project-content__tache ml-3"> -->
+                            <!-- <p class="tache"> -->
+                                <!-- TÂCHES  -->
+                            <!-- </p> -->
+                            <!-- <p class="nbre-tache"> -->
+                                <!-- {{item.numberOfCompletedTask}} / {{item.numberOfAssignedTasks}} -->
+                            <!-- </p> -->
+                        <!-- </div> -->
+                        <div class="project-content__progress col-8">
+                            <p class="project-content__progress-text">
+                                PROGRESSION
+                            </p>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" [style.width.%]="item.ratio" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{item.ratio | number: '1.2-2'}}</div>
+                            </div>
+                        </div>
+                    </div> 
+                    <!-- end of first tache -->
+                </div>
+                </div>
+              </div>
+          </div>      
+          <!-- end-second tab -->
+        </div>
+        <!-- end of col-md-8 -->
+		<div class="col-md-4" *ngIf="userSelectionList.length>0">
+            <div class="card mt-3" >
+                <div class="card-header" id="selection">
+                    <h5 class="mb-0" style="font-size: 14px">
+                        Profils Interessants pour Vous
+                    </h5>
+                </div>
+                <div class="card-body" style="    height: 500px;">
+                    <div class="body__content mt-2 d-flex " *ngFor = "let item of userSelectionList">
+                        <div class="body__content__company-info-1 mr-auto">
+				  <img class="rounded-circle mr-2" src="{{serverPath}}/imag/user/{{item.id}}" width="30" height="30" alt="" *ngIf="profilesLoaded">
+				  <!--<img class="rounded-circle mr-2" src="{{serverPath}}/imag/user/default" width="30" height="30" alt="" *ngIf="dataFetched && !item.profileImageSet">		             			   			   						-->
+                            <!--<img src="assets/images/icon/user.svg" class="mr-2" width="30" height="30" alt="">-->
+                            <span style="cursor:pointer;" class="ml-0" routerLink="/userDetail/{{item.id}}">{{item.firstName}} {{item.lastName}}</span><br>
+                            <small class="ml-5 user-type">{{item.userType}}</small>
+                        </div>
+                        <div class="body__content__company-info-2"><!--
+						<button type="button" class="btn btn-outline-success mr-3 btn-sm" data-toggle="tooltip" data-placement="left" title="Add to Contacts" >
+							<span>	<fa  name="plus" ></fa> </span>
+						</button>-->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>		
+        </div>
+        </div>
+      </section>
+ <!--
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New Project</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form (submit)="addNewProject()">
+               <div class="form-group">            
+                  <input placeholder="Project Name" type="text" class="form-control" id="project-name">				 
+               </div>
+               <div class="form-group">      					                
+                  <textarea placeholder="Project Description" id="summernote" name="editordata" class="form-control" rows="5"></textarea>				  
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer">            
+            <button type="submit" class="btn btn-success" (click)="addNewProject()">Submit</button>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="row" style="padding: 20px;">
+   <div class="col-md-8">
+      <div class="row" >
+         <div class="col-md-12">
+            <div class="panel panel-default">
+               <div class="panel-heading c-list">
+                  <span class="title">Active Projects({{activeProjects.length}})</span>
+                  <ul class="pull-right c-controls">
+                     <li style="    list-style-type: none;">
+                        <a style="cursor:pointer" data-toggle="modal" data-target="#exampleModal" data-placement="top" title="Add Project">
+                        <i class="glyphicon glyphicon-plus">
+                        </i>
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+               <div class="row" style="display: none;">
+                  <div class="col-md-12">
+                     <div class="input-group c-search">
+                        <input type="text" class="form-control" id="contact-list-search">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search text-muted"></span></button>
+                        </span>
+                     </div>
+                  </div>
+               </div>
+               <ul class="list-group pre-scrollable" id="active-list">
+                  <li *ngFor = "let item of activeProjects" class="list-group-item"  >
+                     <div class="col-md-12 col-sm-3">
+                        <img (click)="openProjectDetails(item)"  src="https://images-eu.ssl-images-amazon.com/images/I/3185c8q2k4L._SL500_AC_SS350_.jpg" alt="Scott Stevens" class="img-responsive " style="cursor:pointer"> 
+                     </div>
+                     <div class="col-md-12 col-sm-9">
+                        <span (click)="openProjectDetails(item)" style="cursor:pointer" class="name">{{item.name}}</span>						
+                        <a style="margin-left: 15px;cursor:pointer" class="pull-right tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete" (click)="deleteThatProject(item)">
+                        <i  class="far fa-trash-alt"></i>
+                        </a>						
+                        <a class=" pull-right" style="cursor:pointer" (click)="updateProjectState(item,true)" data-toggle="tooltip" data-placement="top" title="Archive"><i style="color: green;" class="fas fa-toggle-on"></i></a>														
+                        <br>						
+                        <div class="progress">
+                           <div class="progress-bar bg-warning" role="progressbar" [style.width.%]="item.ratio" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{item.ratio}}%
+                        </div>
+                     </div>
+                     <span *ngFor = "let user of item.userMembers">
+                     <span style="cursor:pointer" class="glyphicon glyphicon-user text-muted c-info" data-toggle="tooltip" title="{{user.firstName}} {{user.lastName}}"></span>
+                     <span class="visible-xs"> <span class="text-muted">{{user.lastName}}</span><br></span>					
+                     </span>
+            </div>
+            <div class="clearfix"></div>
+            </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="row" >
+      <div class="col-md-12">
+         <div class="panel panel-default">
+            <div class="panel-heading c-list">
+               <span class="title">Archive Projects({{archiveProjects.length}})</span>
+            </div>
+            <div class="row" style="display: none;">
+               <div class="col-md-12">
+                  <div class="input-group c-search">
+                     <input type="text" class="form-control" id="contact-list-search">
+                     <span class="input-group-btn">
+                     <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search text-muted"></span></button>
+                     </span>
+                  </div>
+               </div>
+            </div>
+            <ul class="list-group pre-scrollable" id="archive-list">
+               <li class="list-group-item" *ngFor = "let item of archiveProjects" >
+                  <div class="col-md-12 col-sm-3">
+                     <img (click)="openProjectDetails(item)" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPFky8bIbxm7WMtA_odinqX2IfCdCHm9Q2LMf_hjSk966rmIZ_" alt="Scott Stevens" class="img-responsive " style="cursor:pointer"> 
+                  </div>
+                  <div class="col-md-12 col-sm-9">
+                     <span (click)="openProjectDetails(item)" style="cursor:pointer" class="name">{{item.name}}</span>
+                     <a style="cursor:pointer"  class="pull-right" data-placement="top" data-toggle="tooltip" title="Active" (click)="updateProjectState(item,false)">
+                     <i style="color: gray;" class="fas fa-toggle-off"></i>
+                     </a>							
+                     <br>						
+                     <div class="progress">
+                        <div class="progress-bar bg-warning" role="progressbar" [style.width.%]="item.ratio" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{item.ratio}}%
+                     </div>
+                  </div>
+                  <span *ngFor = "let user of item.userMembers">
+                  <span style="cursor:pointer" class="glyphicon glyphicon-user text-muted c-info" data-toggle="tooltip" title="{{user.firstName}} {{user.lastName}}"></span>
+                  <span class="visible-xs"> <span class="text-muted">{{user.lastName}}</span><br></span>					
+                  </span>
+         </div>
+         <div class="clearfix"></div>
+         </li>
+         </ul>
+      </div>
+   </div>
+</div>
+</div>
+<div class="col-md-4">
+   <div >
+      <div class="panel panel-default">
+         <div class="panel-heading c-list">
+            <span class="title">Selection</span>
+            <ul class="pull-right c-controls">
+               <li style=" cursor:pointer;   list-style-type: none;"><a (click)="loadContactsSelection()" data-toggle="tooltip" data-placement="top" title="Refresh"><i class="fa fa-refresh fa-spin"></i></a></li>
+            </ul>
+         </div>
+         <div class="row" style="display: none;">
+            <div class="col-md-12">
+               <div class="input-group c-search">
+                  <input type="text" class="form-control" id="contact-list">
+                  <span class="input-group-btn">
+                  <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search text-muted"></span></button>
+                  </span>
+               </div>
+            </div>
+         </div>
+         <ul class="list-group pre-scrollable" id="contact-list" style="height: 2000px">
+            <li *ngFor = "let item of userSelectionList"  class="list-group-item" >
+               <div class="col-md-12 col-sm-3" style="cursor:pointer">
+                  <img src="{{item.avatar}}" alt="{{item.firtname}}" class="img-responsive img-circle">                 
+               </div>
+               <div class="col-md-12 col-sm-9">
+                  <span style="cursor:pointer" class="name">{{item.firstName}} {{item.lastName}}</span><br>
+                  <span class="glyphicon glyphicon-map-marker text-muted c-info" data-toggle="tooltip" title="{{item.town}}"></span>
+                  <span class="visible-xs"> <span class="text-muted">{{item.town}}</span><br></span>
+                  <span class="glyphicon glyphicon-earphone text-muted c-info" data-toggle="tooltip" title={{item.phone}}></span>
+                  <span class="visible-xs"> <span class="text-muted">{{item.phone}}</span><br></span>
+                  <span class="fa fa-comments text-muted c-info" data-toggle="tooltip" title={{item.email}}></span>
+                  <span class="visible-xs"> <span class="text-muted">{{item.email}}</span><br></span>
+               </div>
+               <div class="clearfix"></div>
+            </li>
+         </ul>
+      </div>
+   </div>
+</div>
+</div>
+-->

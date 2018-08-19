@@ -1,0 +1,61 @@
+<header class="dashbord__header" style="background:#a3b9be; ">
+<meta Http-Equiv="Cache-Control" Content="no-cache">
+<meta Http-Equiv="Pragma" Content="no-cache">
+<meta Http-Equiv="Expires" Content="0">
+<meta Http-Equiv="Pragma-directive: no-cache">
+<meta Http-Equiv="Cache-directive: no-cache">
+   <nav class="navbar navbar-light navbar-expand-lg">
+      <a class="navbar-brand ml-5"  routerLink="/home">
+      <img src="/assets/images/transparent.png" width="52" height="30" alt="">
+      </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+         <ul class="navbar-nav mr-auto">
+            <li class="nav-item active ml-2">
+               <button routerLink="/dashboard" type="button" class="btn btn-secondary">Dashboard</button>
+            </li>
+            <li class="nav-item ml-2 mr-2">
+               <a class="nav-link" routerLink="/search">Recherche</a> 
+            </li>
+            <li class="nav-item ml-2 mr-2">
+               <a class="nav-link" routerLink="/network" >Reseau<span *ngIf="dataFetched" [hidden]="userLoggedIn.invitationItemsNumber<=0" class="badge badge-danger">{{userLoggedIn.invitationItemsNumber}}</span></a> 
+            </li>
+            <li class="nav-item ml-2 ">
+               <a class="nav-link" routerLink="/chat" >Chat</a> 
+            </li>				
+			<!--
+            <li class="nav-item ml-2 mr-2">
+               <a class="nav-link" routerLink="/graph" >Graph</a> 
+            </li>	-->				
+         </ul>
+                <div class="messages__info mr-2" style="cursor:pointer" (click)="openChat()">
+                    <img src="assets/images/envelope.svg" width="24" height="24" alt=""> 
+                    <span *ngIf="unreadMessages!=zero" class="badge badge-danger">{{unreadMessages}}</span>
+                </div>		 
+         <div class="btn-group mr-2">
+            <a  class="header-name dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           {{userLoggedIn.firstName}} {{userLoggedIn.lastName}}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+               <button class="dropdown-item" type="button" routerLink="/userProfile">PROFIL</button>
+			   <button *ngIf="userLoggedIn.userType==createur" class="dropdown-item" type="button" routerLink="/need">BESOINS</button>
+			   <button *ngIf="userLoggedIn.userType==prestataire" class="dropdown-item" type="button" routerLink="/need">PRESTATIONS</button>
+			   <button *ngIf="userLoggedIn.userType==investisseur" class="dropdown-item" type="button" routerLink="/need">FINANCEMENTS</button>
+               <button routerLink="/dashboard" class="dropdown-item" type="button">DASHBOARD</button>
+               <div class="dropdown-divider"></div>
+               <button class="dropdown-item" (click)="logout()" type="button">DECONNEXION</button>
+            </div>
+         </div>
+         <div class="dashboard__header__img mr-5">
+		 <!--
+            <img class="rounded-circle" src="{{serverPath}}/image/user/{{userLoggedIn.id}}.jpg" width="34" height="34" alt="" *ngIf="dataFetched && userLoggedIn.profileImageSet">
+			<img class="rounded-circle" src="{{serverPath}}/image/user/user.svg" width="34" height="34" alt="" *ngIf="dataFetched && !userLoggedIn.profileImageSet">
+			-->
+			<img class="rounded-circle" [src]="imageData" width="34" height="34" alt="" *ngIf="dataFetched">			
+         </div>
+      </div>
+   </nav>
+</header>

@@ -1,0 +1,196 @@
+<!--<app-nav-bar></app-nav-bar>-->
+<section class="public">
+   <form class="container" *ngIf="dataFetched" (ngSubmit)="onUpdateUserInfo()">
+   <div class="divider__profile mt-3">
+      <p class="title">
+         PROFILE
+      </p>
+   </div>
+   <div class="row">
+      <div class="col col-sm-6 col-md-6 text-center">
+         <div class="image-upload">
+            <label id="input-text" for="input-file">
+			<img id="profile-image" class="rounded-circle image" [src]="imageData" width="250" height="250" alt="" *ngIf="dataFetched">
+			<!--<img class="rounded-circle image" src="{{serverPath}}/image/user/user.svg" width="250" height="250" alt="" *ngIf="dataFetched && !user.profileImageSet">		             			-->
+            <!--<img src="{{serverPath}}/image/user/{{user.id}}.jpg" class="rounded-circle image" width="250" height="250" alt="image profile">-->
+            </label>
+            <input type="file" id="input-file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*" (change)="loadImageFromBrowser($event)">
+            <div class="middle">
+               <div class="text">Click me</div>
+            </div>
+            <p class="title__user mt-3">
+               {{user.userType}}
+            </p>
+            <a class="nav-link" routerLink="/userDetail/{{user.id}}" style="text-decoration-line:none">
+            Mon profile public
+            </a>							
+         </div>
+      </div>
+      <div class="col col-sm-6 col-md-6">
+         <!-- <form>-->
+         <div class="form-group">
+            <label for="prenom">Prénom</label>
+            <input type="text" class="form-control" id="prenom" name="firstName" placeholder="Prénom" [(ngModel)]="user.firstName">
+         </div>
+         <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" class="form-control" id="nom" placeholder="Nom" name="lastName" [(ngModel)]="user.lastName">
+         </div>
+         <div class="form-group">
+            <label for="secteur">Secteur d’activité</label>
+            <mat-select [(ngModel)]="user.sector" name="sector" id="sector" class="form-control" (change)="onSectorSelect($event)">
+            <mat-option *ngFor="let activity of activitiesList" [value]="activity"  >
+            {{ activity }}
+            </mat-option>
+            </mat-select>									
+            <!--
+               <select class="form-control" id="secteur">
+                 <option>1</option>
+               </select>-->
+         </div>
+         <div class="form-group">
+            <label for="metier">Métier</label>
+            <mat-select [(ngModel)]="user.job" name="job" id="job" class="form-control">
+            <mat-option *ngFor="let job of jobListFiltered" [value]="job"  >
+            {{ job }}
+            </mat-option>
+            </mat-select>									
+         </div>
+         <!--   </form>-->
+      </div>
+   </div>
+   <div class="row">
+      <div class="col col-sm-6 col-md-6">
+         <div class="divider__profile">
+            <p class="title">
+               BIO
+            </p>
+         </div>
+         <div class="row">
+            <div class="col col-sm-12 col-md-12">
+               <!--<form action="">-->
+               <div class="col-auto mb-2">
+                  <textarea class="form-control" aria-label="With textarea" placeholder="BIO" name="bio" [(ngModel)]="user.bio"></textarea>
+               </div>
+               <!-- </form>-->
+            </div>
+         </div>
+      </div>
+      <div class="col col-sm-6 col-md-6">
+         <div class="divider__profile">
+            <p class="title">
+               Intro
+            </p>
+         </div>
+         <div class="row">
+            <div class="col col-sm-12 col-md-12">
+               <!--<form action="">-->
+               <div class="col-auto mb-2">
+                  <textarea class="form-control" aria-label="With textarea" placeholder="Intro" name="intro" [(ngModel)]="user.intro"></textarea>
+               </div>
+               <!--</form>-->
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- end address -->
+   <div class="divider__profile">
+      <p class="title">
+         Addresse
+      </p>
+   </div>
+   <div class="row">
+      <div class="col col-sm-6 col-md-6">
+         <!--<form action="">-->
+         <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" id="Email" placeholder="Email" name="Email" [(ngModel)]="user.email">
+         </div>
+         <div class="form-group">
+            <label for="Téléphone">Téléphone</label>
+            <input type="text" class="form-control" id="Téléphone" placeholder="Téléphone" name="telephone" [(ngModel)]="user.phone">
+         </div>
+         <div class="form-group">
+            <label for="pays">Pays</label>
+            <input type="text" class="form-control" id="pays" placeholder="Pays" name="country" [(ngModel)]="user.country" disabled=true>
+         </div>
+         <!--</form>-->
+      </div>
+      <div class="col col-sm-6 col-md-6">
+         <!--<form>-->
+         <div class="form-group">
+            <label for="ville">Ville</label>
+            <input style="background:#fff; border: 1px solid #bbbfc2;padding-left: 10px; "  matInput type="text" class="form-control" [matAutocomplete]="auto" [formControl]="stateCtrl"  (input)=inputTextChanged($event.target.value)  [(ngModel)]="user.town" name="town" id="town"  />
+            <mat-autocomplete #auto="matAutocomplete">
+               <mat-option *ngFor="let state of filteredStates | async" [value]="state.name" (click)=testUseCase(state)>
+               {{state.name}}
+               </mat-option>
+            </mat-autocomplete>
+         </div>
+         <div class="form-group">
+            <label for="postal">Code postal</label>
+            <input type="text" class="form-control" id="postal" placeholder="Code postal" name="code_postal" [(ngModel)]="user.codePostal">
+         </div>
+         <!--</form>-->
+      </div>
+   </div>
+   <!-- ebd addresse -->
+   <div class="divider__profile">
+      <p class="title">
+         Réseaux sociaux
+      </p>
+   </div>
+   <div class="row">
+      <div class="col col-sm-6 col-md-6">
+         <!--<form action="">-->
+         <div class="col-auto">
+            <label class="sr-only" for="facebook">Facebook</label>
+            <div class="input-group mb-2">
+               <div class="input-group-prepend">
+                  <div class="input-group-text" style="background-color:#a3b9be;"><img src="assets/images/icon2/facebook-logo-button.svg" width="20" height="20" alt=""></div>
+               </div>
+               <input type="text" class="form-control" id="facebook" placeholder="Facebook" name="facebookId" [(ngModel)]="user.facebookID">
+            </div>
+         </div>
+         <div class="col-auto">
+            <label class="sr-only" for="google">Google</label>
+            <div class="input-group mb-4">
+               <div class="input-group-prepend">
+                  <div class="input-group-text" style="background-color:#a3b9be;"><img src="assets/images/icon2/google-plus-logo-button.svg" width="20" height="20" alt=""></div>
+               </div>
+               <input type="text" class="form-control" id="google" placeholder="Google" name="googleId" [(ngModel)]="user.googleID">
+            </div>
+         </div>
+         <!--</form>-->
+      </div>
+      <div class="col col-sm-6 col-md-6">
+         <!--<form>-->
+         <div class="col-auto">
+            <label class="sr-only" for="twitter">Twitter</label>
+            <div class="input-group mb-2">
+               <div class="input-group-prepend">
+                  <div class="input-group-text" style="background-color:#a3b9be;"><img src="assets/images/icon2/twitter-logo-button.svg" width="20" height="20" alt=""></div>
+               </div>
+               <input type="text" class="form-control" id="twitter" placeholder="Twitter" name="tweeterId" >
+            </div>
+         </div>
+         <div class="col-auto">
+            <label class="sr-only" for="linkedin">Linkedin</label>
+            <div class="input-group mb-4">
+               <div class="input-group-prepend">
+                  <div class="input-group-text" style="background-color:#a3b9be;"><img src="assets/images/icon2/linkedin-button.svg" width="20" height="20" alt=""></div>
+               </div>
+               <input type="text" class="form-control" id="linkedin" placeholder="Linkedin" name="lindkedIdId" [(ngModel)]="user.linkedInID" >
+            </div>
+         </div>
+         <!--</form>-->
+      </div>
+   </div>
+      <ul class="pull-right ">
+         <li style="    list-style-type: none;">
+            <button  type="submit" class="btn btn-outline-primary" id="udpateuserInfoButton">Save</button>
+         </li>
+      </ul>   
+   <!-- end of adress -->
+   </form>
+</section>

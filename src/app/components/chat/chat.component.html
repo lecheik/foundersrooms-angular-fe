@@ -1,0 +1,146 @@
+    <section class="chat">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="chat__messages">
+                    <h3 class="title">
+                         Messages
+                    </h3>
+                    <div class="info__messages-content">
+					<div class="input-group" style="padding-left: 2px;padding-right: 2px;margin-bottom: 3px;">
+						<input [(ngModel)]="searchContactContent" placeholder="Recherche" type="text" class="form-control mb-2" (input)=inputTextChanged($event.target.value)>				
+						</div>
+						<ng-container *ngIf="!searchContact">
+							<div class="content d-flex mb-2" *ngFor="let chat of chats" (click)="loadChatContent(chat)" [attr.id]="chat.correspondantId">
+								<div class="content-img">
+									<img src="{{serverPath}}/imag/user/{{chat.correspondantId}}" class="rounded-circle" width="45" height="45" alt="">
+								</div>
+								<div class="chat-contact">
+									<div class="name__time d-flex justify-content-between">
+										<span class="name pr-2">{{chat.completeCorrespondantName}}</span>
+										<!-- <span class="time  ">12:00am</span> -->
+										<span class="time">{{chat.lastChatActivity| amTimeAgo}}</span> 
+										
+									</div>
+									<div class="message__sender d-flex">
+										<span class="sender" *ngIf="chat.lastMessageExchanged.ownerUsername==userLoggedIn.username">You :</span>
+										<span class="sender" *ngIf="chat.lastMessageExchanged.ownerUsername!=userLoggedIn.username">{{chat.correspondantFirstName}} :</span>
+										<span class="message">{{getMessageContentSubstring(chat.lastMessageExchanged.content)}}</span>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+						<ng-container *ngIf="searchContact">
+							<div class="content d-flex mb-2" *ngFor="let contact of contacts" (click)="loadContactChat(contact)">
+								<div class="content-img">
+									<img src="{{serverPath}}/imag/user/{{contact.userId}}" class="rounded-circle" width="45" height="45" alt="">
+								</div>
+								<div class="chat-contact">
+									<div class="name__time d-flex justify-content-between">
+										<span class="name pr-3">{{contact.firstName}} {{contact.lastName}}</span>
+									</div>
+									<div class="message__sender d-flex">
+										<span class="sender">{{contact.userType}}</span>
+									</div>
+								</div>
+							</div>						
+						</ng-container>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="current__chat">		
+				<ng-container *ngIf="activeContact!=null">				
+                    <div class=" title">					
+                        <h3 class="title-name">						
+                            {{activeContact.firstName}} {{activeContact.lastName}}						
+                        </h3>												
+                        <h6 *ngIf="activeContact.online" class="online">En Ligne</h6>
+						<h6 *ngIf="!activeContact.online" class="online">Hors Ligne</h6>																								
+                    </div>
+				</ng-container>
+				<ng-container *ngIf="activeContact==null">	
+					<h6 class="empty_chat_header ">No active conversation</h6>
+				</ng-container>
+                    <div class="chatbox"  >
+                        <div class="chatlogs" id="chat-area">
+						<ng-container *ngIf="activeContact!=null">
+						<ng-container *ngIf="false">
+                            <div class="chat friend">
+                                <div class="user-photo"></div>
+                                <p class="chat-message">What's up, Brother ..!!</p>
+                            </div>
+                    
+                            <div class="chat self">
+                                <div class="user-photo"></div>
+                                <p class="chat-message">What's up ..!!</p>
+                            </div>
+
+                            <div class="chat friend">
+                                <div class="user-photo"></div>
+                            <p class="chat-message">A única área que eu acho, que vai exigir muita atenção nossa, e aí eu já aventei a hipótese de até criar um ministério. É
+                                na área de... Na área... Eu diria assim, como uma espécie de analogia com o que acontece na área agrícola.</p>
+                            </div>
+                            <div class="chat friend">
+                                <div class="user-photo"></div>
+                                <p class="chat-message">A única área que eu acho, que vai exigir muita atenção nossa, e aí eu já aventei a hipótese de até criar um ministério.
+                                    É na área de... Na área... Eu diria assim, como uma espécie de analogia com o que acontece na área agrícola.</p>
+                            </div>
+                            <div class="chat friend">
+                                <div class="user-photo"></div>
+                                <p class="chat-message">A única área que eu acho, que vai exigir muita atenção nossa, e aí eu já aventei a hipótese de até criar um ministério.
+                                    É na área de... Na área... Eu diria assim, como uma espécie de analogia com o que acontece na área agrícola.</p>
+                            </div>
+                            
+                            <div class="chat self">
+                                <div class="user-photo"></div>
+                                <p class="chat-message">What's up ..!!</p>
+                            </div>
+						</ng-container>
+						<!-- <div [ngClass]="[message.ownerUsername==userLoggedIn.username ? 'chat self' : 'chat friend']" *ngFor="let message of currentChatMessages"> -->
+						<div [ngClass]="[message.ownerUsername==userLoggedIn.username ? 'chat self' : 'chat friend']" *ngFor="let message of activeChat.messages">
+							<!-- <div class="user-photo"></div> -->
+							<img *ngIf="message.ownerUsername==userLoggedIn.username" src="{{serverPath}}/imag/user/{{userLoggedIn.id}}" class="rounded-circle" width="40" height="40" alt=""> 
+							<img *ngIf="message.ownerUsername!=userLoggedIn.username" src="{{serverPath}}/imag/user/{{activeChat.correspondantId}}" class="rounded-circle" width="40" height="40" alt=""> 
+							<p class="chat-message">{{message.content}}</p>
+						</div>
+						</ng-container>						
+                        </div>
+                    </div>
+                    <div [ngClass]="userSelected ? 'chat-form' : 'chat-form  disablecontent'">
+                        <textarea placeholder="Saisir du texte..." [(ngModel)]="message" ></textarea>
+                         <!-- <button type="file" class="mx-3 btn-file"><i class="fas fa-cloud-upload-alt"></i></button> -->
+                        <button type="button" class="ml-3 btn-nobackgr" (click)="send()" [disabled]="message.trim().length<=0">Envoyer</button>
+                    </div>
+                </div>
+            </div> 
+            <div class="col-md-3">
+                <div class="info__messager">
+                    <h3 class="dumy-title">
+                        Profil
+                    </h3>
+					<ng-container *ngIf="activeContact!=null">
+						<div class="info__user"  >
+							<div class="content d-flex">
+								<div class="content-img">
+									<!--<img src="assets/images/footer-logo.png" class="rounded-circle" width="52" height="52" alt="">-->
+									<img src="{{serverPath}}/imag/user/{{activeContact.id}}" class="rounded-circle" width="52" height="52" alt="">
+								</div>
+								<div class="chat-contact">
+									<div class="name d-flex justify-content-between" style="cursor=pointer">
+										<span class="name pr-3">{{activeContact.firstName}} {{activeContact.lastName}}</span>																			
+									</div>		
+									<small>{{activeContact.userType}}</small>										
+									<div class="sender d-flex">
+										<span *ngIf="activeContact.online" class="conected">En Ligne</span>
+										<span *ngIf="!activeContact.online" class="conected">Hors Ligne</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+                </div>
+            </div>			
+
+            </div>            
+    </section>

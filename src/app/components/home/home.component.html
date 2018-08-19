@@ -1,0 +1,157 @@
+<header class="header">
+   <nav class="navbar navbar-light navbar-expand-lg  container" *ngIf="!loggedIn">
+      <a class="navbar-brand" routerLink="/home">
+      <img src="/assets/images/transparent.png" width="82" height="56" alt="">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+         <ul class="navbar-nav mr-auto">
+         </ul>
+         <ul class="navbar-nav">
+            <li class="nav-item active">
+               <a class="nav-link" routerLink="/home" >Accueil <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" routerLink="/home"  >A Propos</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" routerLink="/login" href="#">Connexion</a>
+            </li>
+         </ul>
+         <button routerLink="/sign-up/register" class="btn btn-outline-primary my-2 my-sm-0" >Inscription</button>
+      </div>
+   </nav>
+   <div class="content container">
+      <h1 class="animated bounceInRight hero-text pl-5">
+         FOUNDERSROOMS, Construire les projets de creation d’entreprise de façon collaborative                 
+      </h1>
+      <!-- <p class=" animated bounceInLeft second-text pl-5 "> -->
+		<!-- Suivi proactif de votre projet entrepreneurial et mises en relation avec des experts pour avancer vers la création de votre entreprise innovante.   -->
+      <!-- </p> -->
+   </div>
+</header>
+<section class="exchange">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-6">
+            <img src="assets/images/exchange.svg" alt="..." width="428" height="294" class="pl-5 img-exchange">
+         </div>
+         <div class="col-md-6">
+            <div class="exchange-text text-center">
+               <h3 class="head-text">
+                  METHODOLOGIE
+               </h3>
+               <p class="ex-sub" >
+                    Introduction au concept de workflow projet <br/>
+					De l’idee de projet a un modele économique testé et éprouvé <br/>
+                    Accompagnement, astuces et outils pour avancer dans le projet
+               </p>
+               <p class="ex-sub">
+                   
+               </p>			   
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<section class="explain">
+   <div class="explain__header">
+      <h4 class="text-center">COMMUNAUTE FORTE ET ENTRAIDE</h4>
+      <p class="text-center">
+         Le reseau entier beneficie du parcours de chacun. <br/>
+         Suggestions de mises en relation: la bonne competence proposée au bon moment
+      </p>
+   </div>
+   <div class="container">
+      <div class="row">
+         <div class="col-md-4">
+            <div class="prestataire">
+               <img src="assets/images/prestataire.svg" width="150" height="150" alt="">
+               <h4 class="title-1">CONSULTANT</h4>
+               <p class="sub-text-1">                  
+				  Apportez vos competences 
+				  aux projets portes par la communaute
+               </p>
+               <button *ngIf="!loggedIn" routerLink="/sign-up/supplier" type="button" class="btn btn-secondary">Rejoignez-nous</button>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="porteur">
+               <img src="assets/images/porteur.svg" width="150" height="150" alt="">
+               <h4 class="title-1">CREATEUR</h4>
+               <p class="sub-text-1">
+			   Transformez votre idee en projet solide et structure <br><br>
+               </p>
+               <button *ngIf="!loggedIn" routerLink="/sign-up/creator" type="button" class="btn btn-secondary">Rejoignez-nous</button>
+            </div>
+         </div>		 
+         <div class="col-md-4">
+            <div class="inverstiseur">
+               <img src="assets/images/inverstiseur.svg" width="150" height="150" alt="">
+               <h4 class="title-1">INVESTISSEUR</h4>
+               <p class="sub-text-1">
+			   Pariez sur la reussite des porteurs de projet. Financez l’innovation 
+               </p>
+               <button *ngIf="!loggedIn" routerLink="/sign-up/investor" type="button" class="btn btn-secondary">Rejoignez-nous</button>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<!-- <footer class="footer"> -->
+   <!-- <div class="container"> -->
+      <!-- <div class="row"> -->
+         <!-- <div class="col-md-3"> -->
+            <!-- <img src="assets/images/footer-logo.png" class="footer-logo" alt=""> -->
+         <!-- </div> -->
+         <!-- <div class="col-md-3"> -->
+            <!-- <h5 class="title">COMPANY</h5> -->
+            <!-- <nav class="nav flex-column"> -->
+               <!-- <a class="nav-link active" routerLink="/home">About US</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Careers</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Blog</a> -->
+               <!-- <a class="nav-link active" routerLink="/home">Press</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Brand Guodlines</a> -->
+            <!-- </nav> -->
+         <!-- </div> -->
+         <!-- <div class="col-md-3"> -->
+            <!-- <h5 class="title">PRODUCT</h5> -->
+            <!-- <nav class="nav flex-column"> -->
+               <!-- <a class="nav-link active" routerLink="/home">Why Foundersrooms</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Users Stories</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Security</a> -->
+            <!-- </nav> -->
+         <!-- </div> -->
+         <!-- <div class="col-md-3"> -->
+            <!-- <h5 class="title">RESOURCES</h5> -->
+            <!-- <nav class="nav flex-column"> -->
+               <!-- <a class="nav-link active" routerLink="/home">Help Center</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Guides</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Events</a> -->
+               <!-- <a class="nav-link active" routerLink="/home">Partners</a> -->
+            <!-- </nav> -->
+         <!-- </div> -->
+      <!-- </div> -->
+   <!-- </div> -->
+<!-- </footer> -->
+<div class="sub-footer">
+   <div class="row">
+      <div class="col-md-7">
+         <nav class="nav ">
+            <a class="nav-link " routerLink="/home">Statuts</a>
+            <a class="nav-link" routerLink="/home">Mentions Legales</a>
+            <a class="nav-link" routerLink="/home">Contact</a>
+         </nav>
+      </div>
+      <div class="col-md-5">
+         .
+         <nav class="nav justify-content-end">
+            <img src="assets/images/icon2/twitter-logo-button.svg" width="32" height="32" alt="Foundersrooms socials twitter">
+            <img src="assets/images/icon2/facebook-logo-button.svg" width="32" height="32" alt="Foundersrooms socials facebook">
+         </nav>
+      </div>
+   </div>
+</div>

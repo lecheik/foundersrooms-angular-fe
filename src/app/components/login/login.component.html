@@ -1,0 +1,183 @@
+
+<header class="connect" style="background:#a3b9be; " *ngIf="!loggedIn">
+   <nav class="navbar navbar-light navbar-expand-lg  container">
+      <a class="navbar-brand" routerLink="/home">
+      <img src="/assets/images/transparent.png" width="60" height="35" alt="">
+      </a>
+      <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="custom-toggler navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+         <ul class="navbar-nav mr-auto">
+         </ul>
+         <ul class="navbar-nav">
+            <li class="nav-item active">
+               <a class="nav-link" routerLink="/home">Accueil<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" routerLink="/home">A Propos</a>
+            </li>
+            <!-- <li class="nav-item"> -->
+               <!-- <a class="nav-link" >Connexion</a> -->
+            <!-- </li> -->
+         </ul>
+         <button routerLink="/sign-up/register" class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Inscription</button>
+      </div>
+   </nav>
+</header>
+
+<section class="signin-box">
+   <div class=" d-flex justify-content-center">
+      <div class="box">
+         <h1 class="title text-center">
+            Connexion
+         </h1>
+         <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+               <label for="Email1">Email</label>
+               <input name="username" [(ngModel)]="credential.username" type="text" class="form-control" id="Email1" aria-describedby="emailHelp" placeholder="Votre Email">
+               <!-- <small *ngIf="loginError" class="text-danger text-center">Email address incorrect</small> -->
+            </div>
+            <div class="form-group">
+               <label for="Password1">Mot de Passe</label>
+               <input [(ngModel)]="credential.password" name="password" type="password" class="form-control" id="Password1" placeholder="Votre Mot de Passe">
+               <small *ngIf="loginError" class="text-danger text-center">Email ou Mot de Passe incorrect</small>
+            </div>
+            <button type="submit" class="btn btn-secondary btn-sub">Connexion</button>
+            <p class="text-center text-or">Se Connecter Avec</p>
+         </form>
+            <div class="socials-signin text-center mb-3">
+               <button (click)="signInWithGoogle()" class="btn btn-secondary"><img src="assets/images/icon/google.svg" class="img-fluid" width="18" height="18" alt=""></button>
+               <button (click)="signInWithLinkedIN()" class="btn btn-secondary"><img src="assets/images/icon/linkedin.svg" class="img-fluid" width="18" height="18" alt=""></button>
+               <button (click)="signInWithFB()" class="btn btn-secondary"><img src="assets/images/icon/little-facebook-logo.svg" class="img-fluid" width="18" height="16" alt=""></button>
+            </div>		 
+      </div>
+   </div>
+</section>
+
+<!-- <footer class="footer"> -->
+   <!-- <div class="container"> -->
+      <!-- <div class="row"> -->
+         <!-- <div class="col-md-3"> -->
+            <!-- <img src="assets/images/footer-logo.png" class="footer-logo" alt=""> -->
+         <!-- </div> -->
+         <!-- <div class="col-md-3"> -->
+            <!-- <h5 class="title">COMPANY</h5> -->
+            <!-- <nav class="nav flex-column"> -->
+               <!-- <a class="nav-link active" routerLink="/home">About US</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Careers</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Blog</a> -->
+               <!-- <a class="nav-link active" routerLink="/home">Press</a> -->
+               <!-- <a class="nav-link" routerLink="/home">Brand Guodlines</a> -->
+            <!-- </nav> -->
+         <!-- </div> -->
+         <!-- <div class="col-md-3"> -->
+            <!-- <h5 class="title">PRODUCT</h5> -->
+            <!-- <nav class="nav flex-column"> -->
+               <!-- <a class="nav-link active" routerLink="/login">Why Foundersrooms</a> -->
+               <!-- <a class="nav-link" routerLink="/login">Users Stories</a> -->
+               <!-- <a class="nav-link" routerLink="/login">Security</a> -->
+            <!-- </nav> -->
+         <!-- </div> -->
+         <!-- <div class="col-md-3"> -->
+            <!-- <h5 class="title">RESOURCES</h5> -->
+            <!-- <nav class="nav flex-column"> -->
+               <!-- <a class="nav-link active" routerLink="/login">Help Center</a> -->
+               <!-- <a class="nav-link" routerLink="/login">Guides</a> -->
+               <!-- <a class="nav-link" routerLink="/login">Events</a> -->
+               <!-- <a class="nav-link active" routerLink="/login">Partners</a> -->
+            <!-- </nav> -->
+         <!-- </div> -->
+      <!-- </div> -->
+   <!-- </div> -->
+<!-- </footer> -->
+
+<div class="sub-footer">
+   <div class="row">
+      <div class="col-md-7">
+         <nav class="nav ">
+            <a class="nav-link " routerLink="/login">Statuts</a>
+            <a class="nav-link" routerLink="/login">Mentions Legales</a>
+            <a class="nav-link" routerLink="/login">Contact</a>
+         </nav>
+      </div>
+      <div class="col-md-5">
+         .
+         <nav class="nav justify-content-end">
+            <img src="assets/images/icon2/twitter-logo-button.svg" width="32" height="32" alt="Foundersrooms socials twitter">
+            <img src="assets/images/icon2/facebook-logo-button.svg" width="32" height="32" alt="Foundersrooms socials facebook">
+         </nav>
+      </div>
+   </div>
+</div>
+<!--
+<div class="container">
+	<div class="row" style="margint-top:30px;" [hidden]="loggedIn">
+		<div class="col-xs-3"></div>
+		<div class="col-xs-9">
+			<div class="panel-group">
+				<div class="panel panel-default panel-faq" style="border:none;">
+					<div class="panel-body" style="background-color: #ededed; margin-top:20px;">
+						<mat-tab-group>
+							<mat-tab label="Login">
+								<div style="margin-top:20px;">
+									<div *ngIf="loginError" style="color:red;">
+										Incorrect username or password.
+									</div>
+
+									<form (ngSubmit)="onSubmit()">
+										<div class="form-group">
+											<label for ="username">Username *</label>
+											<input type="text" class="form-control" id="username" name="username" [(ngModel)]="credential.username" required="required" autofocus="autofocus">
+											<p style="color:#828282;">Enter your username</p>
+										</div>
+										<div class="form-group">
+											<label for ="password">Password *</label>
+											<input type="password" class="form-control" id="password" name="password" [(ngModel)]="credential.password" required="required" autofocus="autofocus">
+											<p style="color:#828282;">Enter your password</p>
+										</div>
+										<button mat-raised-button type="submit" class="mat-primary">Log In</button>
+									</form>
+								</div>
+							</mat-tab>
+							<mat-tab label="New Account">
+								<div style="margin-top: 20px;">
+									<div class="alert alert-info" *ngIf="emailSent">An email has been sent to the email address you just registered. Please validate your email adderss and update your password info.</div>
+									<form (ngSubmit)="onNewAccount()">
+										<div class="form-group">
+											<label for="newUsername">Username *</label>&nbsp;<span *ngIf="usernameExists" style="color:red;">Username already exists. Choose a different one.</span>
+											<input type="text" class="form-control" id="newUsername" name="username" [(ngModel)]="username" required="required" >
+											<p style="color:#828282;">Enter your username</p>
+										</div>
+										<div class="form-group">
+											<label for="email">Email Address *</label>&nbsp;<span *ngIf="emailExists" style="color:red;">Email already exists. Choose a different one.</span>
+											<input type="email" class="form-control" id="email" name="email" [(ngModel)]="email" required="required" >
+											<p style="color:#828282;">A valid e-mail address. All e-mails from the system will be sent to this address.</p>
+										</div>
+										<button mat-raised-button type="submit" class="mat-primary">Create new account</button>
+									</form>
+								</div>
+							</mat-tab>
+							<mat-tab label="Forget Password">
+								<div style="margin-top: 20px;">
+									<div class="alert alert-info" *ngIf="emailNotExists">Email doesn't exists.</div>
+									<div class="alert alert-success" *ngIf="forgetPasswordEmailSent">Email sent.</div>
+									<form (ngSubmit)="onForgetPassword()">
+										<div class="form-group">
+											<label for="recoverEmail">Your Email Address *</label>
+											<input type="email" class="form-control" id="recoverEmail" name="recoverEmail" [(ngModel)]="recoverEmail" required="required" >
+											<p style="color:#828282;">Enter your registered email address.</p>
+										</div>
+										<button mat-raised-button type="submit" class="mat-primary">Submit</button>
+									</form>
+								</div>
+							</mat-tab>
+						</mat-tab-group>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+-->

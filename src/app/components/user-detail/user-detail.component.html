@@ -1,0 +1,125 @@
+<!--<app-nav-bar></app-nav-bar>-->
+<section class="userprofile mt-2" >
+   <div class="container" *ngIf="dataFetched">
+      <div class="content__profile pb-4 d-flex">
+         <div class="userprofile__img">
+            <img class="rounded-circle" [src]="imageData" width="250" height="250" alt="" *ngIf="dataFetched">		 
+            <!--<img class="rounded-circle" src="{{serverPath}}/image/user/{{user.id}}.jpg" width="250" height="250" alt="" *ngIf="dataFetched && user.profileImageSet">-->
+            <!--<img class="rounded-circle" src="{{serverPath}}/image/user/user.svg" width="250" height="250" alt="" *ngIf="dataFetched && !user.profileImageSet">		             -->
+         </div>
+         <div class="userprofile__info ml-5">
+            <h5 class="name">
+               {{user.firstName}} {{user.lastName}}
+            </h5>
+            <p class="position">
+               {{user.intro}}
+            </p>
+            <p class="type">
+               {{user.userType}}
+            </p>
+            <p class="userprofile__explain">
+               {{user.bio}}
+            </p>
+            <p class="title">
+               {{user.sector}}
+            </p>
+         </div>
+         <div class=" ml-auto">
+            <button  class="btn btn-secondary" (click)="onRequest()" [hidden]="user.me">{{buttonLabel}}</button>
+         </div>
+      </div>
+      <div class="profile__besoin mt-5" [hidden]="investmentArray?.length==0 && coachingArray?.length==0 && operationsArray?.length==0 && adviseArray?.length==0">
+         <h2 class="title mb-3">
+            BESOINS
+         </h2>
+         <div class="profile__besoin--invest mb-3" [hidden]="investmentArray?.length==0">
+            <h4 class="besoin__invest">
+               SERVICES D'INVESTISSEMENTS ET FINANCEMENT D'ENTREPRISE
+            </h4>
+            <div class="row content d-flex">
+               <div class="col-md-6" *ngFor = "let item of investmentArray">
+                  <h5 class="invest__secondary mt-2">
+                     {{item.service}}
+                  </h5>
+                  <div class="dure">
+                     <span class="mr-5">DURÉE</span>
+                     <span class="duree">De {{item.value1[0]}} mois à {{item.value1[1]}} mois</span>
+                  </div>
+                  <div class="dure">
+                     <span class="mr-5">MONTANT</span>
+                     <span class="montant">De {{item.value2[0]}}€ à {{item.value2[0]}}€</span>
+                  </div>
+                  <div class="dure">
+                     <span class="mr-4">TAUX D'INTÉRÊT</span>
+                     <span >{{item.value3}}%</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- end of investment -->
+         <div class="profile__besoin--invest mb-3" [hidden]="coachingArray?.length==0">
+            <h4 class="besoin__invest">
+               SERVICES D'ACCOMPAGNEMENT AUX CRÉATEURS D'ENTREPRISE
+            </h4>
+            <div class="row content d-flex">
+               <div class="col-md-6" *ngFor = "let item of coachingArray">
+                  <h5 class="invest__secondary mt-2">
+                     {{item.service}}
+                  </h5>
+                  <div class="dure">
+                     <span class="mr-5">DURÉE</span>
+                     <span class="duree">De {{item.value1[0]}} mois à {{item.value1[1]}} mois</span>
+                  </div>
+                  <div class="dure">
+                     <span class="mr-4">TAUX D'INTÉRÊT</span>
+                     <span >{{item.value3}}%</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!--end of coaching-->
+         <div class="profile__besoin--invest mb-3" [hidden]="operationsArray?.length==0">
+            <h4 class="besoin__invest">
+               SERVICES OPERATIONNELS AUX ENTREPRISES
+            </h4>
+            <div class="row content d-flex">
+               <div class="col-md-6" *ngFor = "let item of operationsArray">
+                  <h5 class="invest__secondary mt-2">
+                     {{item.service}}
+                  </h5>
+                  <div class="dure">
+                     <span class="mr-5">DURÉE</span>
+                     <span class="duree">De {{item.value1[0]}} mois à {{item.value1[1]}} mois</span>
+                  </div>
+                  <div class="dure">
+                     <span class="mr-4">TAUX D'INTÉRÊT</span>
+                     <span >{{item.value3}}%</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- end of operation-->
+         <div class="profile__besoin--invest mb-3" [hidden]="adviseArray?.length==0">
+            <h4 class="besoin__invest">
+               CONSEIL ET ASSISTANCE
+            </h4>
+            <div class="row content d-flex">
+               <div class="col-md-6" *ngFor = "let item of adviseArray">
+                  <h5 class="invest__secondary mt-2">
+                     {{item.service}}
+                  </h5>
+                  <div class="dure">
+                     <span class="mr-5">DURÉE</span>
+                     <span class="duree">De {{item.value1[0]}} mois à {{item.value1[1]}} mois</span>
+                  </div>
+                  <div class="dure">
+                     <span class="mr-4">TAUX D'INTÉRÊT</span>
+                     <span >{{item.value3}}%</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!--end of advise-->
+      </div>
+   </div>
+</section>

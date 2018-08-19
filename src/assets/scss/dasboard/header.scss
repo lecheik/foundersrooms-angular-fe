@@ -1,0 +1,29 @@
+.dashbord__header {
+    font-family: $header-text;
+    font-size: 14px;
+    color: $lighter-blue; 
+    .nav-link {
+        color: $lighter-blue;  
+
+        &:hover {
+            width: 95px;
+            height: 36px;
+            border-radius: 4px;
+            background-color: $lighter-blue;
+            color: $orange-darker;
+            text-align: center;
+            transition: 1s ease-out;
+        }
+    }
+
+    a.header-name {
+        cursor: pointer;
+        &:hover {
+            border-radius: 4px;
+            color: $orange-darker;
+            text-align: center;
+            transition: .5s ease-out;
+        }
+    }
+
+}

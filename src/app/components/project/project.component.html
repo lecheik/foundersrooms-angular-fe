@@ -1,0 +1,509 @@
+<!--<app-nav-bar></app-nav-bar>-->
+<div class="modals" >
+   <!-- modal project details start -->
+   <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="bd-example-modal-lg" (blur)="onStepModalHidden($event)">
+      <div class="modal-dialog modal-lg" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 >{{currentSelectedWFStep.stepName}}--</h5>
+               <p  style="text-decoration: underline;"><sup class="modal-title carousel-content-style"></sup></p>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>   
+            </div>
+            <div class="modal-body">
+               <div class="row row-modal mx-1" *ngIf="dataFetched">
+                  <div id="carouselExampleIndicators" class="carousel slide col-8" data-ride="carousel" style="max-height:100%">
+                     <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <!-- <li data-target="#carouselExampleIndicators" data-slide-to="1"></li> -->
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1" *ngIf="currentSelectedWFStep.recom!=''"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2" *ngIf="currentSelectedWFStep.linksTitles.length>0"></li>
+                     </ol>
+                     <div class="carousel-inner">
+                        <div class="carousel-item active" id="1">
+                           <img  class="d-block w-100 h-100" src="assets/images/imageedit_1_6112742997.jpg" alt="First slide">
+                           <div class="carousel-caption d-none d-md-block">
+                              <!--<h5 style="text-decoration: underline;color:#fcb41a;">Description/Questions &agrave; se Poser</h5>-->
+                              <h5 *ngFor="let question of currentSelectedWFStep.description" style="color:#F8860D;font-size:12px;" class="carousel-content-style">{{question}}</h5>
+                           </div>
+                        </div>
+                        <!-- <div class="carousel-item" id="2"> -->
+                        <!-- <img class="d-block w-100 " src="assets/images/tips.jpg" alt="First slide"> -->
+                        <!-- <div class="carousel-caption d-none d-md-block"> -->
+                        <!-- <!--<h5 style="color: #2E0000; font-weight: bold;text-decoration: underline;">Deliverables</h5>--> 
+                        <!-- <p style="color: #E1A868; font-weight: medium;font-size:14px;" *ngFor="let deliverable of currentSelectedWFStep.deliverables" class="carousel-content-style">{{deliverable}}</p> -->
+                        <!-- </div> -->
+                        <!-- </div> -->
+                        <div class="carousel-item" id="2" *ngIf="currentSelectedWFStep.recom!=''">
+                           <img class="d-block w-100 h-100"  src="assets/images/direction.jpeg" alt="First slide">
+                           <div class="carousel-caption d-none d-md-block">
+                              <!--<h5 style="color: #090543; font-weight: bold;text-decoration: underline;">Recommandations</h5>-->
+                              <h5 style="color: #F8860D; font-weight: medium;font-size:12px;" *ngFor="let rec of currentSelectedWFStep.recommandations" class="carousel-content-style">{{rec}}</h5>
+                           </div>
+                        </div>
+                        <div class="carousel-item" *ngIf="currentSelectedWFStep.linksTitles.length>0" id="3">
+                           <img class="d-block w-100 h-100" src="assets/images/glasses.jpeg" alt="First slide">
+                           <div class="carousel-caption d-none d-md-block">
+                              <!--<h5 style="color: #693A19; font-weight: bold;text-decoration: underline;">Liens</h5>-->                          
+                              <ng-container *ngFor = "let lien of currentSelectedWFStep.linksTitles ">
+                                 <div class="mb-1">									
+                                    <a style="color: #C96530; font-weight: bold;text-decoration: underline;font-size:12px;" href={{lien.link}} target="_blank"  class="carousel-content-style">{{lien.text}}</a>
+                                 </div>
+                              </ng-container>
+                              <!-- </p> -->
+                           </div>
+                        </div>
+                     </div>
+                     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                     <span class="sr-only">Previous</span>
+                     </a>
+                     <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                     <span class="sr-only">Next</span>
+                     </a>
+                  </div>
+                  <div class="card col-md-4 nopadding livrables"  >
+                     <div class="card-header">
+                        Livrables
+                     </div>
+                     <div class="card-body pre-scrollable " style="padding: 0.4rem;">
+                        <div *ngFor="let deliverable of currentSelectedWFStep.deliverablesModelStatus" class="mt-1 d-block">
+                           <label for="deliverable" style="font-family: cursive ;font-size: 11px;  margin-bottom: -15rem;">{{deliverable.label}}</label>                               
+                           <div >
+                              <span class="badge badge-success badge-pill pull-right mt-2">{{deliverable.progress}}%</span>						                             
+                              <mat-slider (change)=deliverableProgressChange(deliverable) style="width:65%" thumbLabel min="0" max="100" step="0.5"  [(ngModel)]="deliverable.progress" [ngClass]="[currentProject.creator.id==userLoggedIn.id ? '' : 'disablecontent']" ></mat-slider>													  
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- end of carousel -->
+               <div class="container-fluid">
+                  <div class="row" *ngIf="dataFetched">
+                     <div class="col-6" *ngIf="currentProject.creator.id==userLoggedIn.id">
+                        <div class="note" style="min-height:100%">
+                           <!-- <h3 class="title-note">Note Keeping</h3> -->
+                           <div class="btn-group mr-2  my-2" style="height:32px;color: #e89441;font-size: 20px;">
+                              <button type="button" class="btn btn-outline-secondary btn-sm" style="color: #e89441;">
+                              Notes
+                              </button>
+                              <button  type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="sr-only">Toggle Dropdown</span>
+                              </button>
+                              <div class="dropdown-menu" *ngIf="currentSelectedWFStep.notes.length>=0 || !noteInputShown">
+                                 <a class="dropdown-item" (click)="showNoteInputField()" *ngIf="!noteInputShown" >Laisser une Note</a>
+                                 <!-- <div class="dropdown-divider" *ngIf="!remarkListShown"></div> -->
+                                 <a class="dropdown-item" *ngIf="!noteListShown && currentSelectedWFStep.notes.length>0" (click)="allNotesAction()" >Show All(<span style="color:#b1600e">{{currentSelectedWFStep.notes.length}}</span>)</a>
+                                 <!-- <div class="dropdown-divider" *ngIf="remarkListShown"></div> -->
+                                 <a class="dropdown-item" *ngIf="noteListShown" (click)="allNotesAction()">Masquer</a>
+                              </div>
+                           </div>
+                           <div class="note-content" >
+                              <form (ngSubmit)="submitNote(f)" #f="ngForm" *ngIf="noteInputShown" >
+                              <div class="content-input d-flex" id="noteTypingArea">
+                                 <!-- <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="Write a Note"> -->
+                                 <textarea  rows="1"  id="noteSummernote"  class="form-control" [(ngModel)]="myNote.content" name="note-content" aria-label="With textarea" placeholder="Votre Note"></textarea>
+                                 <button type="submit" class="btn btn-link text-primary pull-right ml-2" [disabled]="myNote.content.length<=0" title="Valider la Note" style="padding:0px">
+                                    <span class="icon-style" style="color:#062f6f">
+                                       <fa name="check-circle" size="1x"></fa>
+                                    </span>
+                                 </button>
+                                 <button  type="button" class="btn btn-link text-primary pull-right ml-3" (click)="hideNoteInputField()" title="Masquer la Zone" style="padding:0px">
+                                    <span class="icon-style" style="color:red" >
+                                       <fa name="eye-slash" size="1x"></fa>
+                                    </span>
+                                 </button>
+                              </div>
+                              </form>						   
+                              <div class="content mt-2"  *ngIf="noteListShown">
+                                 <p  *ngFor="let note of currentSelectedWFStep.notes" class="content-text" style="color:#2D3639;word-wrap: break-word;">
+                                    <span class="mr-1" style="background-color: blue;">&nbsp;</span>
+                                    <span class="mr-1" style="color:#838034;font-style: italic;font-size:11px">{{note.creationDate | amTimeAgo}}</span>
+                                    <span (click)="populateNoteInputText(note)" style="font-size:13px;cursor:pointer" >{{note.content}}</span>
+                                    <span  class="icon-style pull-right" style="color:red;cursor:pointer">
+                                       <fa name="trash" size="1x" (click)="deleteStepNote(note)"></fa>
+                                    </span>
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div  [ngClass]="[currentProject.creator.id==userLoggedIn.id ? 'col-6' : 'col-12']">
+                        <div class="remarks">
+                           <!-- <h3 class="title-remarks">Remarks</h3> -->
+                           <div class="btn-group mr-2  my-2" style="height:32px;color: #062f6f;font-size: 20px;">
+                              <button type="button" class="btn btn-outline-secondary btn-sm" style="color: #062f6f;">
+                              Commentaires
+                              </button>
+                              <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="sr-only">Toggle Dropdown</span>
+                              </button>
+                              <div class="dropdown-menu">
+                                 <a class="dropdown-item" (click)="showRemarkInputField()" *ngIf="!remarkInputShown" >Laisser une Remarque</a>
+                                 <!-- <div class="dropdown-divider" *ngIf="!remarkListShown"></div> -->
+                                 <a class="dropdown-item" *ngIf="!remarkListShown && currentSelectedWFStep.remarks.length>0" (click)="showAllRemarks()" >Show All(<span style="color:#062f6f">{{currentSelectedWFStep.remarks.length}})</span></a>
+                                 <!-- <div class="dropdown-divider" *ngIf="remarkListShown"></div> -->
+                                 <a class="dropdown-item" *ngIf="remarkListShown" (click)="hideAllRemarks()">Masquer</a>
+                              </div>
+                           </div>
+                           <!-- <button  type="button" class="btn btn-link text-primary" title="Add a Remark" *ngIf="checkProjectMemberStatus()" (click)="showRemarkInputField()" data-toggle="tooltip" data-placement="top"> -->
+                           <!-- <span style="color:#062f6f"> -->
+                           <!-- <fa name="plus" size="1x"></fa> -->
+                           <!-- </span> -->
+                           <!-- </button> -->
+                           <div class="content">
+                              <div class="remarks-content">
+                                 <ng-container *ngIf="checkProjectMemberStatus()">
+                                    <div class="content-input d-flex" *ngIf="remarkInputShown" >
+                                       <!-- <form (ngSubmit)="submitNote(f)" #f="ngForm"> -->
+                                       <textarea  rows="1"  id="remarkSummernote"  class="form-control" [(ngModel)]="myComment.content" name="remark-content" aria-label="With textarea" placeholder="Laisser un Commentaire"></textarea>								                                     
+                                       <button  type="button" class="btn btn-link text-primary" (click)="submitComment()" title="Votre Commentaire" [disabled]="myComment.content.length<=0">
+                                          <span style="color:#062f6f">
+                                             <fa name="check-circle" size="1x"></fa>
+                                          </span>
+                                       </button>
+                                       <button  type="button" class="btn btn-link text-primary" (click)="hideRemarkInputField()" title="Masquer la Zone">
+                                          <span class="icon-style" style="color:red" >
+                                             <fa name="eye-slash" size="1x"></fa>
+                                          </span>
+                                       </button>
+                                       <!-- </form> -->
+                                       <!-- <button type="button">Add</button> -->
+                                    </div>
+                                 </ng-container>
+                                 <ng-container *ngIf="remarkListShown">
+                                    <div class="contents-item" *ngFor="let comment of currentSelectedWFStep.remarks" >
+                                       <img src="{{serverPath}}/imag/user/{{comment.userReference.id}}" class="rounded-circle" width="22" height="22" alt="">
+                                       <span *ngIf="comment.userReference.id==userLoggedIn.id" class="name" style="font-size:14px;">Me</span>
+                                       <span *ngIf="comment.userReference.id!=userLoggedIn.id" class="name" style="font-size:14px;">{{comment.userReference.firstName}} {{comment.userReference.lastName}}</span>
+                                       <span class="text" style="font-size:13px;">{{comment.content}}</span>
+                                       <div class="ml-4" style="color:#838034;font-style: italic;font-size:11px">{{comment.creationDate | amTimeAgo}}</div>
+                                    </div>
+                                 </ng-container>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="attachfile" *ngIf="dataFetched">
+               <div class="container-fluid">
+                  <h5 class="title text-center">Pièces Jointes</h5>
+                  <div class="input d-flex justify-content-center" *ngIf="checkProjectMemberStatus()">
+                     <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+                           text/plain, application/pdf, .jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|images/*" (change)="handleFileSelect($event)">
+                        <label class="custom-file-label" for="customFile">Choisir un Fichier</label>
+                     </div>
+                     <!--<button type="button" class="btn">Add</button>-->
+                  </div>
+               </div>
+               <div class="file-images d-flex justify-content-center mt-2" *ngIf="dataFetched">
+                  <div class="imagelabel text-center mx-4 " *ngFor="let attachment of currentSelectedWFStep.attachmentsMetaData">
+                     <a  [attr.href]="getAttachmentUrl(attachment)" target="_blank">
+                     <img src="assets/images/icon/file_icon.png" width="50" height="50" alt="attachment" id="imagefiles" style="cursor:pointer" [attr.title]="getAttachmentTooltip(attachment)">  
+                     </a>
+                     <p for="imagefiles" >
+                        <span style="text-decoration: underline;font-size:11px;" class="text">{{attachment.attachmentName}}</span>
+                        <!-- <i class=" far fa-times-circle" style="color: red;"></i> -->
+                        <span  class="icon-style" style="color:red" *ngIf="(currentProject.creator.id==userLoggedIn.id || attachment.userReference.id==userLoggedIn.id) && checkProjectMemberStatus()">
+                           <fa name="ban" size="1x" (click)="deleteStepAttachment(attachment)"></fa>
+                        </span>
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="modal fade" id="modaldetailprojet" tabindex="-1" role="dialog" aria-labelledby="modaldetailprojetTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="ModalLongTitle">Description du Projet</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form>
+                  <div class="form-group">
+                     <label for="video">URL</label>		
+                     <input (change)="controlURLValue($event)" [style.background-color]="getURLStyle()"  name="video" [(ngModel)]="url" type="text" class="form-control" id="video" aria-describedby="projectname" placeholder="Youtube URL">
+                  </div>
+                  <div class="form-group">
+                     <label [style.color]="getDescriptionBackgroundStyle()" for="projectdetails">Description(Minimum 50 characters)</label>
+                     <!-- <textarea  id="summernote"  class="form-control" [(ngModel)]="currentProject.description" name="project-description" aria-label="With textarea" ></textarea> -->
+					 <textarea  id="summernote"  class="form-control" [(ngModel)]="projectDescription" name="project-description" aria-label="With textarea" ></textarea>
+                  </div>
+               </form>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-success" (click)="updateProjectDetails()" [disabled]="projectDescription.trim().length==0">Save</button>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- modal project details ends -->
+   <!-- modal descrition flow -->
+   <div class="modal fade" id="modalflow" tabindex="-1" role="dialog" aria-labelledby="modalflowprojetTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="ModalLongTitle">{{currentSelectedStep.stepName}}</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form (ngSubmit)="saveStepDescription()" >
+                  <div class="form-group">
+                     <label for="detailide">Description</label>
+                     <textarea id="stepSummernote" [(ngModel)]="currentSelectedStep.description" name="step-details" class="form-control" aria-label="With textarea" ></textarea>
+                  </div>
+                  <div class="modal-footer">
+                     <input type="submit" class="btn btn-success" value="Save"/>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- end modal description flow -->
+   <!-- modal Nouvelle tache -->
+   <div class="modal fade" id="modaltache" tabindex="-1" role="dialog" aria-labelledby="modaltacheTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="ModalLongTitle">TASK</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <form (ngSubmit)="saveStepTask()">
+                  <div class="form-group">
+                     <div class="form-group">
+                        <label for="detailide">Task Details</label>                    
+                        <textarea  name="task-details" id="taskSummernote"  [(ngModel)]="currentSelectedTask.taskName" class="form-control" aria-label="With textarea" ></textarea>
+                     </div>
+                     <label for="user">Assigned To..</label>
+                     <select class="form-control" id="user" [(ngModel)]="currentSelectedUser"  name="user-drop-down">
+                     <option *ngFor="let userItem of myContacts" [ngValue]="userItem">{{userItem.firstName}} {{userItem.lastName}}</option >
+                     </select>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="submit" class="btn btn-success">Save</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="modal fade" id="modalTeam" tabindex="-1" role="dialog" aria-labelledby="modaltacheTitle" aria-hidden="true" (blur)="onTeamModalHidden($event)">
+      <div class="modal-dialog modal-dialog-centered "  style="max-width:25%;" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="ModalLongTitle" style="font-size: 12px;">Project Team</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">	
+                  <ng-multiselect-dropdown 
+                  [placeholder]="'Choose Members'"
+                  [data]="myContacts"
+                  [(ngModel)]="tempArray"
+                  [settings]="dropdownSettings"
+                  (onSelect)="onItemSelect($event)"
+                  (onSelectAll)="onSelectAll($event)"
+                  (onDeSelect)="onItemDeSelect($event)"
+                  (onDeSelectAll)="onDeSelectAll($event)"
+                  >
+                  </ng-multiselect-dropdown>				  
+               </div>
+               <div class="card" >
+                  <div class="card-body pre-scrollable" style="    height: 250px;">
+                     <div class="body__content mt-1 mb-1" *ngFor="let item of selectedContacts">
+                        <div class="body__content__company-info-1 mr-auto d-flex">
+                           <img class="rounded-circle mr-2" src="{{serverPath}}/imag/user/{{item.id}}" width="30" height="30" alt="" >
+                           <span  class="ml-0" >{{item.firstNameAndLastName}}</span>								                                                      
+                        </div>
+                        <small class="ml-5 user-type">{{item.userType}}</small>
+                        <!-- <input type="checkbox" aria-label="Checkbox for following text input" class="pull-right mt-2"> -->
+                     </div>
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="submit" class="btn btn-outline-success" (click)="submitProjectTeam()">Save</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- modal end tache -->
+</div>
+<section class="projectDetails" *ngIf="dataFetched">
+   <div class="details mt-3">
+      <div class="container">
+         <button *ngIf="userLoggedIn.id==currentProject.creator.id" [disabled]="userLoggedIn.id!=currentProject.creator.id"  class="btn btn-outline-danger ml-2 pull-right btn-sm" (click)="deleteProject()"[disabled]="currentProject.archived" >Supprimer</button>         	  
+         <mat-slide-toggle *ngIf="userLoggedIn.id==currentProject.creator.id" [disabled]="userLoggedIn.id!=currentProject.creator.id" [ngModel]="currentProject.archived" class="pull-right" (change)=archiveProject($event) >Archiver</mat-slide-toggle>		
+         <div class="d-flex">
+            <h4 class="details__title mr-2">
+               {{currentProject.name}}
+            </h4>
+            <button *ngIf="userLoggedIn.id==currentProject.creator.id" (click)="openTeamModal()"  type="button" class="btn btn-outline-info btn-sm" data-target="#modalTeam" data-toggle="modal" title="Project Team" >
+            <span style="color:#fd7e14">
+               <fa name="users" size="1x"></fa>
+            </span>
+            </button>
+         </div>
+         <!-- starting the design tab for workflow and dashboard -->
+         <div  id="whole-content" [ngClass]="currentProject.archived ? 'details__tabs mt-4 disablecontent' : 'details__tabs mt-4'">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+               <li class="nav-item">
+                  <a class="nav-link active" id="dashboard-tab" data-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false">DASHBOARD</a>
+               </li>
+               <li class="nav-item">
+                  <a  class="nav-link" id="workflow-tab" data-toggle="tab" href="#workflow" role="tab" aria-controls="workflow" aria-selected="true" (click)="onWorkflowClick()">WORKFLOW</a>
+               </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+               <div class="tab-pane fade show active " id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                  <div class="dashboard__content-title">
+                     <h5 class="dasboard-title">
+                        Details du Projet
+                     </h5>
+                  </div>
+                  <div class="details__dashboard-contents">
+                     <!--  <button type="button" (click)="openProjectDetailsModal()"class="btn btn-outline-success pull-right" data-toggle="modal" data-target="#modaldetailprojet">Edit</button>-->
+                     <div class="row">
+                        <div class="col-md-5">
+                           <div class="dashboard__content-video" *ngIf="currentProject.videoPitch!=''">
+                              <div class="video-container">
+                                 <iframe [src]="currentProject.videoPitch | safe" frameborder="0" allowfullscreen>
+                                 </iframe>
+                              </div>
+                           </div>
+                           <span *ngIf="currentProject.videoPitch==''" class="align-middle">Aucun Pitch.. Bien vouloir inclure un lien Youtube</span>
+                        </div>
+                        <div class="col-md-7">
+                           <div class="dasboard__content-description">
+                              <div class="card">
+                                 <div *ngIf="userLoggedIn.id==currentProject.creator.id">
+                                    <button   type="button" (click)="openProjectDetailsModal()"class="mr-4 mt-3 float-right btn btn-outline-secondary " data-toggle="modal" data-target="#modaldetailprojet">Edition</button>                                   
+                                 </div>
+                                 <div class="card-body idee__description" [innerHTML]="currentProject.description">
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="dashboard__tach mt-4" *ngIf="anyProgress()">
+                     <h5 class="tache__title">
+                        Workflow Group
+                     </h5>
+                  </div>
+                  <div class="dasboard__tach-content">
+                     <div class="row">
+                        <!-- col 1 -->
+                        <ng-container *ngFor = "let item of currentProject.projectWF ">
+                           <div class="col-md-3" *ngIf="item.groupRatio>0">
+                              <div class="dashboar__progress" >
+                                 <a >
+                                 <h6 class="tach__title-sub mt-4" id="{{item.id}}{{item.stepNum}}{{item.completed}}" [attr.name]="item.tabReference" [attr.stepNum]="item.stepNum">
+                                 {{item.groupName}}
+                                 </h6>
+                                 </a>
+                                 <p class="progress-title">
+                                    PROGRESSION
+                                 </p>
+                                 <div class="progress">
+                                    <div class="progress-bar" role="progressbar" [style.width.%]="computeGroupRatio(item)" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                    <!-- <span>{{computeGroupRatio(item) | number: '1.2-2'}}</span> -->
+                                    <span *ngIf="computeGroupRatio(item)>10">{{computeGroupRatio(item) | number: '1.2-2'}}</span>
+                                    <span *ngIf="computeGroupRatio(item)<=10" style="color:#131516;">{{computeGroupRatio(item) | number: '1.2-2'}}</span>
+                                 </div>
+                              </div>
+                              <div class="img-member">
+                                 <img routerLink="/userDetail/{{member.id}}" *ngFor="let member of getStepMembers(item)" src="{{serverPath}}/imag/user/{{member.id}}" title="{{member.firstName}} {{member.lastName}}-{{member.userType}}" width="20" height="20" class="rounded-circle  mt-2 mr-1" style="cursor:pointer" alt="">
+                              </div>
+                           </div>
+                     </div>
+                     </ng-container>
+                  </div>
+               </div>
+               <!-- starting equipe space -->
+               <!--<div class="dasboard__equipe mt-4" *ngIf="checkProjectMemberAvailability()">-->
+               <div class="dasboard__equipe mt-4" >
+                  <h5 class="equipe__title">
+                     Equipe
+                  </h5>
+                  <div class="equipe-content d-flex mt-4 mb-4">
+                     <!--<div class="user mr-3 text-center" *ngIf="creatorNotYetInProjectMemberList()" >-->
+                     <div class="user mr-3 text-center" >
+                        <img class="rounded-circle " src="{{serverPath}}/imag/user/{{currentProject.creator.id}}" width="60" height="60" alt="" *ngIf="dataFetched && currentProject.creator.profileImageSet">
+                        <img class="rounded-circle " src="{{serverPath}}/imag/user/default" width="60" height="60" alt="" *ngIf="dataFetched && !currentProject.creator.profileImageSet">		             			   			   											 
+                        <!--<img src="assets/images/icon/user.svg" width="60" height="60" class="img-fluid" alt="">-->
+                        <p class="euipe-username mt-3" routerLink="/userDetail/{{currentProject.creator.id}}" style="cursor:pointer">
+                           {{currentProject.creator.firstName}} {{currentProject.creator.lastName}}
+                        </p>
+                        <p class="equipe-username-title">
+                           {{currentProject.creator.userType}}
+                        </p>
+                     </div>
+                     <ng-container *ngFor = "let member of currentProject.members">
+                        <div class="user mr-3 text-center" *ngIf="member.member.id!=currentProject.creator.id && member.activeMember" >
+                           <img class="rounded-circle " src="{{serverPath}}/imag/user/{{member.member.id}}" width="60" height="60" alt="" *ngIf="dataFetched && member.member.profileImageSet">
+                           <img class="rounded-circle " src="{{serverPath}}/imag/user/default" width="60" height="60" alt="" *ngIf="dataFetched && !member.member.profileImageSet">		             			   			   											                            
+                           <p class="euipe-username mt-3" routerLink="/userDetail/{{member.member.id}}" style="cursor:pointer">
+                              {{member.member.firstName}} {{member.member.lastName}}
+                           </p>
+                           <p class="equipe-username-title">
+                              {{member.member.userType}}
+                           </p>
+                        </div>
+                     </ng-container>
+                  </div>
+               </div>
+            </div>
+            <div class="tab-pane fade " id="workflow" role="tabpanel" aria-labelledby="workflow-tab" >
+               <div  class="row mt-1">
+                  <div class="col-md-12" id="wrapper" (window:resize)="onResize($event)" style="margin:auto">
+                     <!-- <img  id="myimage" src="https://s3.us-east-2.amazonaws.com/foundersrooms.images/project_workflow.jpg" class="mx-auto d-block" alt="Loading..." usemap="#mapname" (load)="dosomething()"/>    -->
+					 <img  id="myimage" src="assets/images/project_workflow.jpg" class="mx-auto d-block" alt="Loading..." usemap="#mapname" (load)="dosomething()"/>   
+                     <!-- <img  id="myimage" src="{{serverPath}}/project_workflow.jpg" class="mx-auto d-block" alt="Website map" usemap="#mapname" (load)="dosomething()"/>  -->
+                     <map name="mapname" *ngIf="dataFetched && imageShown">
+                        <!--<area  coords="84,10,193,63" shape="rect" (click)="onStepItemClick(0)">-->
+                        <area  coords="227,25,351,71" shape="rect" (click)="onStepItemClick(0,0)">
+                        <area  coords="401,26,524,69" shape="rect" (click)="onStepItemClick(0,1)">
+                        <!-- <area  coords="86,94,193,150" shape="rect" (click)="onStepItemClick(3)"> -->
+                        <area  coords="227,94,352,137" shape="rect" (click)="onStepItemClick(1,0)">
+                        <!-- <area  coords="85,165,192,220" shape="rect" (click)="onStepItemClick(5)"> -->
+                        <area  coords="228,147,351,190" shape="rect" (click)="onStepItemClick(2,0)">
+                        <area  coords="402,148,528,191" shape="rect" (click)="onStepItemClick(2,1)">
+                        <!-- <area  coords="85,379,193,435" shape="rect" (click)="onStepItemClick(8)"> -->
+                        <area  coords="229,267,351,312" shape="rect" (click)="onStepItemClick(3,0)">
+                        <area  coords="402,269,528,311" shape="rect" (click)="onStepItemClick(3,1)">
+                        <!-- <area  coords="75,597,180,656" shape="rect" (click)="onStepItemClick(11)"> -->
+                        <area  coords="202,383,310,426" shape="rect" (click)="onStepItemClick(4,0)">
+                        <area  coords="334,383,439,426" shape="rect" (click)="onStepItemClick(4,1)">
+                        <area  coords="463,383,569,425" shape="rect" (click)="onStepItemClick(4,2)">
+                        <!-- <area  coords="79,697,192,752" shape="rect" (click)="onStepItemClick(15)"> -->
+                        <area  coords="203,437,310,480" shape="rect" (click)="onStepItemClick(5,0)">
+                        <area  coords="335,436,438,480" shape="rect" (click)="onStepItemClick(5,1)">
+                        <area  coords="464,437,569,480" shape="rect" (click)="onStepItemClick(5,2)">
+                     </map>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   </div>
+</section>

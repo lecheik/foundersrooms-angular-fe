@@ -1,0 +1,177 @@
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Services</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Services d'investissements et financement d'entreprise</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Services d'accompagnement aux créateurs d'entreprise</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Services opérationnels aux entreprises</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Conseil et assistance</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <button type="submit" class="btn btn-block btn-secondary">Submit</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+<section class="search mt-4">
+   <div class="container">
+      <h4 class="title mt-1 mb-1">
+         RECHERCHE
+      </h4>
+      <div class="row">
+         <form id="formsearch" class="float-right ml-3 ">
+            <div class="form-row align-items-center">
+               <div class="col-md-4  my-3 mr-3">
+                  <input type="text" [(ngModel)]="searchInput" name="search_name" class="form-control" id="inlineFormInputName" placeholder="Recherche de Nom">
+               </div>
+               <div class="col-md-4  my-3 mr-3">
+                  <!--
+                     <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" [(ngModel)]="activitySector" name="sector" *ngIf="dataFetched">
+                       <option  *ngFor="let activity of activitiesList">{{ activity }}</option>
+                     </select>						
+                     -->
+                  <mat-form-field style="    width: 100%;"  >
+                     <mat-select [(ngModel)]="actvitiesChecked" placeholder="Activités" [formControl]="activityFormControl" multiple>
+                     <mat-option  *ngFor="let activity of activitiesList" [value]="activity">{{activity}}  </mat-option>
+                     </mat-select>
+                  </mat-form-field>
+               </div>
+               <div class="col-md-4  my-3 mr-3">
+                  <input style="background:#fff; border: 1px solid #bbbfc2; padding-left: 10px;" id="inlineFormCustomSelect" matInput type="text" class="custom-select mr-sm-2 form-control" [matAutocomplete]="auto" [formControl]="stateCtrl"  (input)=inputCityChanged($event.target.value)  [(ngModel)]="searchLocation" name="town"  />
+                  <mat-autocomplete #auto="matAutocomplete">
+                     <mat-option *ngFor="let state of citiesList" [value]="state.name">
+                     {{state.name}}
+                     </mat-option>
+                  </mat-autocomplete>
+               </div>
+            </div>
+         </form>
+      </div>
+      <div class="search__tab">
+         <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+               <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="true">Profil</a>
+               <a class="nav-item nav-link" id="nav-project-tab" data-toggle="tab" href="#nav-project" role="tab" aria-controls="nav-project" aria-selected="false">Projets</a>
+            </div>
+         </nav>
+         <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+               <div class="tab__choice d-flex mt-2">
+                  <div class="custom-control custom-radio mr-5 ">
+                     <input [checked]="userTypeOptions.creator" (change)="userTypeOptions.creator = !userTypeOptions.creator"  type="checkbox" id="createur" name="customRadio" class="custom-control-input" >
+                     <label class="custom-control-label" for="createur">Créateur</label>
+                  </div>
+                  <div class="custom-control custom-radio mr-5">
+                     <input [checked]="userTypeOptions.provider" (change)="userTypeOptions.provider = !userTypeOptions.provider" type="checkbox" id="presta" name="customRadio" class="custom-control-input">
+                     <label class="custom-control-label" for="presta">Consultant</label>
+                  </div>
+                  <div class="custom-control custom-radio mr-5">
+                     <input [checked]="userTypeOptions.investor" (change)="userTypeOptions.investor = !userTypeOptions.investor" type="checkbox" id="investir" name="customRadio" class="custom-control-input">
+                     <label class="custom-control-label" for="investir">Investisseur</label>
+                  </div>
+                                <div class=" mr-5">
+                                    <!-- Button trigger modal -->
+                                    <a class="link primary" data-toggle="modal" data-target="#exampleModal">
+                                        Services
+                                    </a>
+                                </div>				  
+                  <div class="col-auto my-1">
+                     <button class="btn btn-secondary" (click)="seachUserProfiles()">Lancer la Recherche</button>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="tab__content-profile d-flex mt-2 ml-3 col-md-3" *ngFor="let user of usersFound" >
+                     <div class="content-profile__img">
+                        <img style="cursor:pointer" routerLink="/userDetail/{{user.id}}" src="{{serverPath}}/imag/user/{{user.id}}" width="62" height="62" alt="" class="rounded-circle">
+                     </div>
+                     <div class="content-profile__info ml-3">
+                        <p style="cursor:pointer" routerLink="/userDetail/{{user.id}}" class="info__name">{{user.firstName}} {{user.lastName}}</p>
+                        <p class="info__titre">{{user.userType}}</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="tab-pane fade" id="nav-project" role="tabpanel" aria-labelledby="nav-project-tab">
+               <div class="tab__choice-project d-flex mt-1 row">
+                  <div class="members-choice col-md-5">
+                     <p class="project__tab-title">Membres</p>
+                     <div class="radio d-flex">
+                        <div class="custom-control custom-radio mr-5">
+                           <input [checked]="teamSizeChoices.oneToFive" (click)="radioChange($event)" type="radio" id="createu" name="oneToFive" class="custom-control-input">
+                           <label class="custom-control-label" for="createu">1 - 5</label>
+                        </div>
+                        <div class="custom-control custom-radio mr-5">
+                           <input [checked]="teamSizeChoices.fiveToTen" (click)="radioChange($event)"  type="radio" id="prest" name="fiveToTen" class="custom-control-input">
+                           <label class="custom-control-label" for="prest">5 - 10</label>
+                        </div>
+                        <div class="custom-control custom-radio mr-5">
+                           <input [checked]="teamSizeChoices.tenToTwenty" (click)="radioChange($event)" type="radio" id="investi" name="tenToTwenty" class="custom-control-input">
+                           <label class="custom-control-label" for="investi">10 - 20</label>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="progress-choice col-md-5">
+                     <p class="progress-title">Etat d'Avancement</p>
+                     <div class="col-10 mb-3">
+                        <nouislider (update)="onProgressStatusChange($event)" style="margin-top: 0;margin-bottom: 0;" [connect]="true" [min]="1" [max]="10" [step]="1" [(ngModel)]=progressTab ></nouislider>
+                     </div>
+                     <span style="font-size: 12px;"class="content">De <strong>{{progressMarginInf}}</strong> à <strong>{{progressMarginSup}}</strong> </span>
+                  </div>
+                  <div class="col-auto my-1 col-md-2">
+                     <button type="submit" class="btn btn-secondary" (click)="seachProjects()">Search</button>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="project-content mt-1 mb-3 col-md-4 ml-1" *ngFor="let item of projectsFound">
+                     <h6 class="project-content__title" style="cursor:pointer" routerLink="/project/{{item.id}}">
+                        {{item.name}}
+                     </h6>
+                     <div class="project-content__tache ml-3">
+                        <p class="tache" style="cursor:pointer">
+                           TÂCHES 
+                        </p>
+                        <p class="nbre-tache">
+                           {{item.numberOfCompletedTask}} / {{item.numberOfAssignedTasks}}
+                        </p>
+                     </div>
+                     <div class="project-content__progress col-8">
+                        <p class="project-content__progress-text">
+                           PROGRESSION
+                        </p>
+                        <div class="progress">
+                           <!--
+                              <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                              -->
+                           <div class="progress-bar" role="progressbar" [style.width.%]="item.ratio" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                           <span *ngIf="item.ratio>10">{{item.ratio | number: '1.2-2'}}</span>
+                           <span *ngIf="item.ratio<=10" style="color:#131516;text-align:center">{{item.ratio}}</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   </div>
+</section>

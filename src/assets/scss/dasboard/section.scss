@@ -1,0 +1,90 @@
+ .body {
+     font-family: $header-text;
+
+
+     .body__title-1 {
+         color: $orange-darker;
+         font-size: 16px;
+         cursor: pointer;
+
+         &:hover {
+            font-size: 20px;
+            font-weight: bold;
+             color: $darker-blue;
+             transition: 0.5s ease-in;
+         }
+     }
+
+     .card-body {
+         height: 400px;
+         overflow: scroll;
+
+         .project-content {
+            .project-content__title {
+                font-size: 16px;
+                font-weight: bold;
+                font-family: $header-text;
+                color: $orange-darker;
+            }
+            .tache {
+                font-size: 14px;
+            }
+            .nbre-tache {
+                text-align: center;
+                padding-top: 2.3px;
+                width: 58px;
+                height: 25px;
+                border-radius: 3px;
+                background-color: $orange-darker;
+                color: $lighter-grey;
+            }
+            .project-content__progress-text {
+                font-size: 14px;
+            }
+    
+            &:hover {
+                padding: 10px;
+                width: 95%;
+                height: 194;
+                border-radius: 3px;
+                background-color: $lighter-grey;
+            }
+        }
+     }
+
+     .body__content__company-info-1 {
+        color: $orange;
+        font-size: 14px;
+        font-weight: normal;
+     }
+
+     .body__content__company-info-2 {
+        
+         .btn-archive {
+            font-weight: normal;
+            font-size: 14px;
+            color: $lighter-grey;
+             width: 75px;
+             height: 26px;
+             background: #F55F44;
+             padding-top: 3px;
+
+             &:hover {
+                background: rgb(155, 38, 18);
+                transition: 1s ease-out;
+             }
+         }
+
+     }
+     .body__content__company-info-3 {
+
+        .body__going__content {
+            cursor: pointer;
+            font-weight: bold;
+        }
+     }
+
+     .selection {
+         margin-top: 4.4em;
+     }
+ }

@@ -1,0 +1,41 @@
+.footer {
+    padding: 3em;
+    position: relative;
+    display: block;
+    .title {
+        font-family: $header-text;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .nav-link {
+        font-family: $body-text;
+        font-size: 16px;
+        font-weight: normal;
+        color: $light-blue;
+        &:hover {
+            color: $darker-blue;
+        }
+    }
+}
+
+.sub-footer {
+    padding: 3em;
+    background: $light-blue;
+
+    .nav-link {
+        font-family: $header-text;
+        font-weight: bold;
+        font-size: 19px;
+        color: $lighter-grey;
+
+        &:hover {
+            color: $darker-blue;
+        }
+    }
+
+    img {
+        color: $lighter-grey;
+        margin-right: 2em;
+    }
+}

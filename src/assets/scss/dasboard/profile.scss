@@ -1,0 +1,83 @@
+.userprofile {
+    font-family: $title-text;
+    padding-top: 5em;
+
+    .btn {
+        font-family: $header-text;
+    }
+
+    .content__profile {
+        border-bottom: 1px solid $light-blue;
+        .userprofile__info {
+            .name {
+                font-family: $header-text;
+                font-size: 18px;
+                font-weight: bold;
+                color: $orange-darker;
+            }
+            .position {
+                font-size: 14px;
+            }
+            .type {
+                text-align: center;
+                padding-top: 3.8px;
+                width: 86px;
+                height: 31px;
+                border-radius: 3px;
+                font-family: $header-text;
+                font-weight: bold;
+                font-size: 14px;
+                background-color: $orange-darker;
+                color: $lighter-grey;
+            }
+            .userprofile__explain {
+                font-size: 14px;
+            }
+            .title {
+                font-family: $header-text;
+                font-size: 14px;
+                color: $orange-darker;
+            }
+        }
+    }
+
+    .profile__besoin {
+        .title{
+            font-family: $header-text;
+            font-weight: bold;
+            color: $orange-darker;
+        }
+
+        .profile__besoin--invest {
+            .besoin__invest {
+                font-family: $header-text;
+                font-weight: bold;
+                font-size: 18px;
+                color: $orange;
+            }
+
+            .content {
+                .invest__secondary {
+                    font-family: $header-text;
+                    font-weight: bold;
+                    font-size: 16px;
+                    color: $darker-blue;
+                }
+
+                span {
+                    font-size: 12px;
+                }
+
+                .dure {
+                    .duree {
+                        padding-left: 31px;
+                    }
+                    .montant {
+                        padding-left: 12px;
+                    }
+                }
+            }
+        }
+    }
+
+}

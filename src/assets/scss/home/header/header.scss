@@ -1,0 +1,47 @@
+.header {
+    background-image: 
+    linear-gradient( to left top, 
+     rgba(232, 149, 65, 0.377), rgba(6, 46, 111, 0.521)), url(../assets/images/hero.jpg);
+    height: 95vh; 
+    background-position: top;
+    background-size: cover;
+
+    .nav-link {
+        font-family: $header-text;
+        font-size: 16px;
+        color: $lighter-grey;
+
+        &:hover{
+            color: $orange;
+        }
+    }
+
+    .btn {
+        font-family: $header-text;
+        font-size: 16px;
+        color: $lighter-grey;
+
+        &:hover{
+            color: $lighter-grey;
+        }
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#e89441' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+    }
+}
+
+.content {
+    .hero-text {
+        padding-top: 3em;
+        font-family: $header-text;
+        font-size: 55px;
+        color: $darker-blue;
+    }
+    .second-text {
+        width: 483px;
+        font-family: $header-text;
+        font-size: 16px;
+        color: $lighter-grey;
+    }
+}

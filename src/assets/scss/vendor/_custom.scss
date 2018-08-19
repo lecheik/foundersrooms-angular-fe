@@ -1,0 +1,27 @@
+// over riding and puting custom property
+$white: #FFFFFF;
+$orange: #e89441;
+$orange-darker: #b1600e;
+$darker-blue: #062f6f;
+$light-blue: #a3b9be;
+$lighter-grey: #f9f9f9;
+$lighter-blue: #d0eef5;
+
+* {
+    margin: 0px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+$brand-primary: $orange;
+
+$body-bg: $white;
+$body-color: $light-blue;
+
+$theme-colors: (
+    "primary": $orange,
+    "secondary": $darker-blue
+);
+
+

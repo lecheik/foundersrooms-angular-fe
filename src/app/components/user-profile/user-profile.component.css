@@ -1,0 +1,6 @@
+@media (min-width: 300px) and (max-width: 812px) {
+    .image-upload img {
+        height: 150px;
+        width: 150px;
+    }
+}

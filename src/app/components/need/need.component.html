@@ -1,0 +1,363 @@
+<!--<app-nav-bar></app-nav-bar>-->
+<section class="besoin" *ngIf="dataFetched">
+   <div *ngIf="userLoggedIn.userType==createur" class="besoin__title container mt-3">
+      BESOINS
+   </div>
+   <div *ngIf="userLoggedIn.userType==prestataire" class="besoin__title container mt-3">
+      PRESTATIONS
+   </div>
+   <div *ngIf="userLoggedIn.userType==investisseur" class="besoin__title container mt-3">
+      FINANCEMENTS
+   </div>
+   <div class="besoin__tabs" >
+      <div class="container">
+         <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
+            <ng-container *ngIf="userLoggedIn.userType!=prestataire || userLoggedIn.userType==investisseur">
+               <li class="nav-item col-md-3">
+                  <a class="nav-link text-center active" id="inverstisseur-tab" data-toggle="tab" href="#inverstisseur" role="tab" aria-controls="inverstisseur" aria-selected="true">Services d'investissements et financement d'entreprise</a>
+               </li>
+            </ng-container>
+            <ng-container *ngIf="userLoggedIn.userType!=investisseur">
+               <li  class="nav-item col-md-3">
+                  <a [ngClass]="[userLoggedIn.userType==prestataire? 'nav-link text-center active' : 'nav-link text-center']" id="createur-tab" data-toggle="tab" href="#createur" role="tab" aria-controls="createur" aria-selected="false">Services d'accompagnement aux créateurs d'entreprise</a>
+               </li>
+               <li class="nav-item col-md-3">
+                  <a class="nav-link text-center" id="operateur-tab" data-toggle="tab" href="#operateur" role="tab" aria-controls="operateur" aria-selected="false">Services opérationnels aux entreprises</a>
+               </li>
+               <li class="nav-item col-md-3">
+                  <a class="nav-link text-center" id="conseil-tab" data-toggle="tab" href="#conseil" role="tab" aria-controls="conseil" aria-selected="false">Conseil et assistance</a>
+               </li>
+            </ng-container>
+         </ul>
+         <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="inverstisseur" role="tabpanel" aria-labelledby="inverstisseur-tab" *ngIf="userLoggedIn.userType!=prestataire || userLoggedIn.userType==investisseur">
+               <!-- start of content -->
+               <!--
+                  <p class="contet-title mt-4">
+                     Service(s)
+                  </p>-->
+               <div class="row">
+                  <div class="besoin__select col-6 mt-0 mb-1">
+                     <mat-form-field style="    width: 100%;"  >
+                        <mat-select [(ngModel)]="investmentChecked" placeholder="Services(s)" [formControl]="investmentFormControl" multiple>
+                        <mat-option  (click)="clickOnInvestmentService($event,service)" *ngFor="let service of investmentServices" [value]="service">{{service}}  </mat-option>
+                        </mat-select>
+                     </mat-form-field>
+                  </div>
+                  <div class="besoin__select col-6 mt-2 mb-4">
+                     <div class="float-right">
+                        <button type="submit" class="btn btn-outline-danger" (click)="deleteAllServices('investment')" [disabled]="investmentSelection.length==0">Delete All</button>
+                        <button type="submit" class="btn btn-outline-success" (click)="submitInvestmentServices()" [disabled]="investmentSelection.length==0">Submit</button>
+                     </div>
+                  </div>
+               </div>
+               <h5 class="no_items" *ngIf="investmentSelection.length==0">
+                     Aucun Service Sélectionné
+               </h5>			   
+               <div class="besoin__content pl-2 pt-2 pb-2 pr-2" *ngFor = "let item of investmentSelection">
+                  <h5 class="besoin__content-title">
+                     {{item.service}}
+                  </h5>
+                  <div class="row">
+                     <div class="col-md-3">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="details">Détails</label>
+                              <textarea id="details" class="form-control" aria-label="With textarea" [(ngModel)]="item.details"></textarea>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                     <div class="col-md-3">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="duree">Durée</label>
+                              <nouislider style="margin-top: 0;margin-bottom: 0;"  [connect]="true" [min]="1" [max]="24" [step]="1" [(ngModel)]=item.value1 ></nouislider>
+                              <small id="duree" class="form-text text-muted">De <strong> {{item.value1[0]}} mois </strong> à <strong> {{item.value1[1]}} mois</strong></small>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                     <div class="col-md-3">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="motant">Montant</label>
+                              <nouislider style="margin-top: 0;margin-bottom: 0;" [connect]="true" [min]="100000" [max]="1000000" [step]="100000" [(ngModel)]=item.value2 ></nouislider>							  
+                              <small id="montant" class="form-text text-muted">De <strong> {{item.value2[0]}}€ </strong> à <strong> {{item.value2[1]}}€ </strong></small>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                     <div class="col-md-3">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="exampleInputEmail1">Taux d'intérêt</label>
+                              <input type="number" name="rate" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="30" [(ngModel)]="item.value3">
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                  </div>
+               </div>
+               <!-- end of content -->
+            </div>
+            <div [ngClass]="[userLoggedIn.userType==prestataire ? 'tab-pane fade show active' : 'tab-pane fade']" id="createur" role="tabpanel" aria-labelledby="createur-tab" *ngIf="userLoggedIn.userType!=investisseur">
+               <!-- start of content -->
+               <!--
+                  <p class="contet-title mt-4">
+                     Service(s)
+                  </p>-->
+               <div class="row">
+                  <div class="besoin__select col-6 mt-0 mb-1">
+                     <mat-form-field style="    width: 100%;"  >
+                        <mat-select [(ngModel)]="coachingChecked" placeholder="Services(s)" [formControl]="coachingFormControl" multiple>
+                        <mat-option (click)="clickOnCoachingService($event,service)" *ngFor="let service of coachingServices" [value]="service">{{service}}</mat-option>
+                        </mat-select>
+                     </mat-form-field>
+                     <!--
+                        <select class="custom-select ">
+                           <option selected>Open this select menu</option>
+                           <option value="1">One</option>
+                           <option value="2">Two</option>
+                           <option value="3">Three</option>
+                        </select> -->
+                  </div>
+                  <div class="besoin__select col-6 mt-2 mb-4">
+                     <div class="float-right">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteAllServices('coaching')" [disabled]="coachingSelection.length==0">Delete All</button>
+                        <button type="button" class="btn btn-outline-success" (click)="submitCoachingServices()" [disabled]="coachingSelection.length==0">Submit</button>
+                     </div>
+                  </div>
+               </div>
+               <h5 class="no_items" *ngIf="coachingSelection.length==0">
+                     Aucun Service Sélectionné
+               </h5>			   
+               <div class="besoin__content pl-2 pt-2 pb-2 pr-2" *ngFor = "let item of coachingSelection">
+                  <h5 class="besoin__content-title">
+                     {{item.service}}
+                  </h5>
+                  <div class="row">
+                     <div class="col-md-4">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="details">Détails</label>
+                              <textarea id="details" class="form-control" aria-label="With textarea" [(ngModel)]="item.details"></textarea>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                     <div class="col-md-4">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="duree">Durée</label>
+                              <nouislider style="margin-top: 0;margin-bottom: 0;"  [connect]="true"   [min]="0" [max]="24" [step]="1" [(ngModel)]=item.value1 ></nouislider>							  
+                              <!--
+                                 <div class="progress">
+                                    <div id="duree" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                 </div>
+                                 -->
+                              <small id="duree" class="form-text text-muted">De <strong> {{item.value1[0]}} mois </strong> à <strong> {{item.value1[1]}} mois</strong></small>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                     <!--
+                        <div class="col-md-3">
+                           <div class="besoin__content-details">
+                              <div class="form-group">
+                                 <label for="motant">Montant</label>
+                                 <div class="progress">
+                                    <div id="montant" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                 </div>
+                                 <small id="montant" class="form-text text-muted">De <strong> 10 000€ </strong> à <strong> 100 000€ </strong></small>
+                              </div>
+                           </div>
+                        </div>
+                        -->
+                     <!-- end -->
+                     <div class="col-md-4">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="exampleInputEmail1">Taux d'intérêt</label>
+                              <input type="number" name="rate" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="30" [(ngModel)]="item.value3">
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                  </div>
+               </div>
+               <!-- end of content -->
+            </div>
+            <div class="tab-pane fade" id="operateur" role="tabpanel" aria-labelledby="operateur-tab" *ngIf="userLoggedIn.userType!=investisseur">
+               <!-- start of content -->
+               <!--
+                  <p class="contet-title mt-4">
+                     Service(s)
+                  </p>-->
+               <div class="row">
+                  <div class="besoin__select col-6 mt-2 mb-4">
+                     <!--
+                        <select class="custom-select ">
+                           <option selected>Open this select menu</option>
+                           <option value="1">One</option>
+                           <option value="2">Two</option>
+                           <option value="3">Three</option>
+                        </select>-->
+                     <mat-form-field style="    width: 100%;" >
+                        <mat-select [(ngModel)]="operationChecked" placeholder="Services(s)" [formControl]="operationsFormControl" multiple>
+                        <mat-option (click)="clickOnOperationService($event,service)" *ngFor="let service of operationalServices" [value]="service">{{service}}</mat-option>
+                        </mat-select>
+                     </mat-form-field>
+                  </div>
+                  <div class="besoin__select col-6 mt-2 mb-4">
+                     <div class="float-right">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteAllServices('operations')" [disabled]="operationalSelection.length==0">Delete All</button>
+                        <button type="button" class="btn btn-outline-success" (click)="submitOperationalServices()" [disabled]="operationalSelection.length==0">Submit</button>
+                     </div>
+                  </div>
+               </div>
+               <h5 class="no_items" *ngIf="operationalSelection.length==0">
+                     Aucun Service Sélectionné
+               </h5>			   
+               <div class="besoin__content pl-2 pt-2 pb-2 pr-2" *ngFor = "let item of operationalSelection" >
+                  <h5 class="besoin__content-title">
+                     {{item.service}}
+                  </h5>
+                  <div class="row">
+                     <div class="col-md-4">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="details">Détails</label>
+                              <textarea id="details" class="form-control" aria-label="With textarea" [(ngModel)]="item.details"></textarea>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                     <div class="col-md-4">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="duree">Durée</label>
+                              <nouislider style="margin-top: 0;margin-bottom: 0;"  [connect]="true" [min]="0" [max]="24" [step]="1" [(ngModel)]=item.value1 ></nouislider>							  
+                              <!--
+                                 <div class="progress">
+                                    <div id="duree" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                 </div>
+                                 -->
+                              <small id="duree" class="form-text text-muted">De <strong> {{item.value1[0]}} mois </strong> à <strong> {{item.value1[1]}} mois</strong></small>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                     <!--
+                        <div class="col-md-3">
+                           <div class="besoin__content-details">
+                              <div class="form-group">
+                                 <label for="motant">Montant</label>
+                                 <div class="progress">
+                                    <div id="montant" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                 </div>
+                                 <small id="montant" class="form-text text-muted">De <strong> 10 000€ </strong> à <strong> 100 000€ </strong></small>
+                              </div>
+                           </div>
+                        </div>
+                        -->
+                     <!-- end -->
+                     <div class="col-md-4">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="exampleInputEmail1">Taux d'intérêt</label>
+                              <input type="number" name="rate" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="30" [(ngModel)]="item.value3">
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                  </div>
+               </div>
+               <!-- end of content -->
+            </div>
+            <div class="tab-pane fade" id="conseil" role="tabpanel" aria-labelledby="conseil-tab" *ngIf="userLoggedIn.userType!=investisseur">
+               <!-- start of content -->
+               <!--
+                  <p class="contet-title mt-4">
+                     Service(s)
+                  </p>-->
+               <div class="row">
+                  <div class="besoin__select col-6 mt-2 mb-4">
+                     <mat-form-field style="width:100%">
+                        <mat-select [(ngModel)]="adviseChecked" placeholder="Services(s)" [formControl]="adviseFormControl" multiple>
+                        <mat-option (click)="clickOnAdviseService($event,service)" *ngFor="let service of adviseServices" [value]="service">{{service}}</mat-option>
+                        </mat-select>
+                     </mat-form-field>
+                     <!--
+                        <select class="custom-select ">
+                           <option selected>Open this select menu</option>
+                           <option value="1">One</option>
+                           <option value="2">Two</option>
+                           <option value="3">Three</option>
+                        </select>-->
+                  </div>
+                  <div class="besoin__select col-6 mt-2 mb-4">
+                     <div class="float-right">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteAllServices('advise')" [disabled]="adviseSelection.length==0">Delete All</button>
+                        <button type="button" class="btn btn-outline-success" (click)="submitAdvismentServices()" [disabled]="adviseSelection.length==0">Submit</button>
+                     </div>
+                  </div>
+               </div>
+               <div class="besoin__content pl-2 pt-2 pb-2 pr-2" *ngFor = "let item of adviseSelection">
+                  <h5 class="besoin__content-title">
+                     {{item.service}}
+                  </h5>
+                  <div class="row">
+                     <div class="col-md-4">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="details">Détails</label>
+                              <textarea id="details" class="form-control" aria-label="With textarea" [(ngModel)]="item.details"></textarea>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                     <div class="col-md-4">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="duree">Durée</label>
+                              <nouislider style="margin-top: 0;margin-bottom: 0;"  [connect]="true" [min]="0" [max]="24" [step]="1" [(ngModel)]=item.value1 ></nouislider>							  							  
+                              <!--
+                                 <div class="progress">
+                                    <div id="duree" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                 </div>-->
+                              <small id="duree" class="form-text text-muted">De <strong> {{item.value1[0]}} mois </strong> à <strong> {{item.value1[1]}} mois</strong></small>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                     <!--
+                        <div class="col-md-3">
+                           <div class="besoin__content-details">
+                              <div class="form-group">
+                                 <label for="motant">Montant</label>
+                                 <div class="progress">
+                                    <div id="montant" class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                 </div>
+                                 <small id="montant" class="form-text text-muted">De <strong> 10 000€ </strong> à <strong> 100 000€ </strong></small>
+                              </div>
+                           </div>
+                        </div>-->
+                     <!-- end -->
+                     <div class="col-md-4">
+                        <div class="besoin__content-details">
+                           <div class="form-group">
+                              <label for="exampleInputEmail1">Taux d'intérêt</label>
+                              <input type="number" name="rate" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="30" [(ngModel)]="item.value3">
+                           </div>
+                        </div>
+                     </div>
+                     <!-- end -->
+                  </div>
+               </div>
+               <!-- end of content -->
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
